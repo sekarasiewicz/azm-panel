@@ -1,0 +1,16 @@
+{
+    "extends": "airbnb-base",
+    "plugins": [
+        "import"
+    ],
+    "rules": {
+      "semi": ["error", "never"],
+      "no-param-reassign": 0,
+      "import/no-extraneous-dependencies":
+      ["error", {"devDependencies": ["**/*.tape.js", "**/test-app.js"]}],
+      "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+      "object-shorthand": ["error", "consistent"],
+      "func-names": ["error", "as-needed"],
+      "no-underscore-dangle": ["error", {"allow": ["__"]}]
+    }
+}

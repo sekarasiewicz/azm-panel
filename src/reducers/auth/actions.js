@@ -1,13 +1,13 @@
 import { SET_CURRENT_USER } from './constants'
 
-export function setCurrentUser(user) {
+export function setCurrentUser (user) {
   return {
     type: SET_CURRENT_USER,
     user,
   }
 }
 
-export function login(data) {
+export function login (data) {
   return dispatch => {
     console.log('login')
     // return axios.post('/api/auth', data).then(res => {
@@ -19,7 +19,7 @@ export function login(data) {
   }
 }
 
-export function logout() {
+export function logout () {
   return dispatch => {
     console.log('logout')
     // localStorage.removeItem('jwtToken')

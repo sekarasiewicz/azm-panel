@@ -4,6 +4,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
+import PrivateRoute from './components/PrivateRoute'
 import logo from './logo.svg'
 import './App.css'
 
@@ -21,6 +22,7 @@ class App extends Component {
         <Switch>
           <Route path="/checkout" exact component={() => <p>checkout</p>}/>
           <DefaultLayout>
+            <img src={logo} className="App-logo" alt="logo" />
             <Switch>
               <Route path="/" exact component={() => <p>Home</p>}/>
               <PrivateRoute path="/products" component={() => <p>products</p>}/>

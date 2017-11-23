@@ -5,33 +5,44 @@ import { Route, Redirect } from 'react-router-dom'
 
 class PrivateRouteContainer extends React.Component {
   componentWillMount () {
-    console.log('PrivateRouteContainer', this.props.user)
+    console.log('loading')
+    // console.log('PrivateRouteContainer', this.props.user)
   }
 
   render () {
     const {
       user,
+      loading,
       component: Component,
       ...props
     } = this.props
-    return (
-      <Route
-        {...props}
-        render={props =>
-          !isEmpty(user)
-            ? <Component {...props} />
-            : (
-              <Redirect to={{
-                pathname: '/login',
-                state: { from: props.location },
-              }} />
-            )
-        }
-      />
-    )
+    if (loading) {
+      console.log('was here loading')
+      return (<div>Loading</div>)
+    } else {
+      console.log('Loaded')
+      return (
+        <Route
+          {...props}
+          render={props =>
+            !isEmpty(user)
+              ? <Component {...props} />
+              : (
+                <Redirect to={{
+                  pathname: '/login',
+                  state: { from: props.location },
+                }} />
+              )
+          }
+        />
+      )
+    }
   }
 }
 
-const PrivateRoute = connect(state => ({user: state.authReducer.user}))(PrivateRouteContainer)
+const PrivateRoute = connect(state => ({
+  user: state.authReducer.user,
+  loading: state.authReducer.loading,
+}))(PrivateRouteContainer)
 
 export default PrivateRoute

@@ -1,4 +1,4 @@
-import { SET_USER, AUTH_ERROR } from './constants'
+import { SET_USER, AUTH_ERROR, LOADING } from './constants'
 import firebase from '../../lib/firebaseService'
 
 export function setUser (user) {
@@ -12,6 +12,14 @@ export function authError (error) {
   return {
     type: AUTH_ERROR,
     error,
+  }
+}
+
+export function isLoading (loading) {
+  console.log(loading)
+  return {
+    type: LOADING,
+    loading,
   }
 }
 

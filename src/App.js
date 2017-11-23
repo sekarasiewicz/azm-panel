@@ -9,10 +9,25 @@ import PrivateRoute from './components/PrivateRoute'
 import AppBar from './components/AppBar'
 import logo from './logo.svg'
 import './App.css'
+// import firebase from './lib/firebaseService'
 
 import { login, userState, updateUser } from './reducers/auth/actions'
 
 class App extends Component {
+  // componentWillMount = () => {
+  //   this.setState({
+  //     loading: true,
+  //   })
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     this.setState({
+  //       loading: false,
+  //     })
+  //   })
+  // }
+
+  state = {
+    loading: false,
+  }
   login = (e) => {
     e.preventDefault()
     login({email: 'sekarasiewicz@gmail.com', password: 'sebastian'})
@@ -33,28 +48,32 @@ class App extends Component {
 
   render () {
     return (
-      <Router>
-        <Switch>
-          <Route path="/" exact component={() => <p>Home</p>}/>
-          <Route path="/login" component={() => <div>
-            <p>Login</p>
-            <a href="#" onClick={this.login}>login</a>
-            <br />
-            <a href="#" onClick={this.userState}>Check User</a>
-            <br />
-            <a href="#" onClick={this.update}>Update User</a>
-            <br />
-            <br />
-            <Link to="/servants">Servants</Link>
-          </div>}/>
-          <AppBar>
-            <img src={logo} className="App-logo" alt="logo" />
+      <div>
+        { !this.state.loading
+          ? <Router>
             <Switch>
-              <PrivateRoute path="/servants" component={() => <p>Servants</p>}/>
+              <Route path="/" exact component={() => <p>Home</p>}/>
+              <Route path="/login" component={() => <div>
+                <p>Login</p>
+                <a href="#" onClick={this.login}>login</a>
+                <br />
+                <a href="#" onClick={this.userState}>Check User</a>
+                <br />
+                <a href="#" onClick={this.update}>Update User</a>
+                <br />
+                <br />
+                <Link to="/servants">Servants</Link>
+              </div>}/>
+              <AppBar>
+                <img src={logo} className="App-logo" alt="logo" />
+                <Switch>
+                  <PrivateRoute path="/servants" component={() => <p>Servants</p>}/>
+                </Switch>
+              </AppBar>
             </Switch>
-          </AppBar>
-        </Switch>
-      </Router>
+          </Router>
+          : <div>LOADING</div>}
+      </div>
     )
   }
 }

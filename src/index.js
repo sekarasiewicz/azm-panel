@@ -10,7 +10,8 @@ import purple from 'material-ui/colors/purple'
 import green from 'material-ui/colors/green'
 import red from 'material-ui/colors/red'
 import App from './App'
-import { userState } from './reducers/auth/actions'
+import firebase from './lib/firebaseService'
+import { userState, setUser, isLoading } from './reducers/auth/actions'
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -35,7 +36,15 @@ const store = createStore(
 )
 
 // If User is already auth, set in reducer
-store.dispatch(userState())
+// store.dispatch(userState())
+store.dispatch(isLoading(true))
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.dispatch(setUser(user))
+  } else {
+    store.dispatch(isLoading(false))
+  }
+})
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

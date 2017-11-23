@@ -1,18 +1,21 @@
-import isEmpty from 'lodash/isEmpty'
-import { SET_CURRENT_USER } from './constants'
+import { SET_USER, AUTH_ERROR } from './constants'
 
 const initialState = {
-  isAuthenticated: false,
   user: {},
+  error: {},
 }
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case SET_CURRENT_USER:
+    case SET_USER:
       return {
         ...state,
-        isAuthenticated: !isEmpty(action.user),
         user: action.user,
+      }
+    case AUTH_ERROR:
+      return {
+        ...state,
+        error: action.error,
       }
     default: return state
   }

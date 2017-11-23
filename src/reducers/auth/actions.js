@@ -1,61 +1,48 @@
-import { SET_CURRENT_USER } from './constants'
+import { SET_USER, AUTH_ERROR } from './constants'
 import firebase from '../../lib/firebaseService'
 
-export function setCurrentUser (user) {
+export function setUser (user) {
   return {
-    type: SET_CURRENT_USER,
+    type: SET_USER,
     user,
   }
 }
 
-export function login (data) {
-  firebase.auth().signInWithEmailAndPassword(data.email, data.password).catch((error) => {
-    const errorCode = error.code
-    const errorMessage = error.message
-    console.log(errorCode, errorMessage)
-  })
+export function authError (error) {
+  return {
+    type: AUTH_ERROR,
+    error,
+  }
+}
 
+export function login (data) {
   return dispatch => {
-    // console.log('login', firebase.app().name)
-    // return axios.post('/api/auth', data).then(res => {
-    //   const token = res.data.token
-    //   localStorage.setItem('jwtToken', token)
-    //   setAuthorizationToken(token)
-    //   dispatch(setCurrentUser(jwt.decode(token)))
-    // })
+    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+      .then(user => dispatch(setUser(user)))
+      .catch(error => dispatch(authError(error)))
   }
 }
 
 export function logout () {
+  console.log('was here before')
   return dispatch => {
-    console.log('logout')
-    // localStorage.removeItem('jwtToken')
-    // setAuthorizationToken(false)
-    // dispatch(setCurrentUser({}))
+    console.log('was here dispatch')
+    firebase.auth().signOut().then(() => {
+      dispatch(setUser({}))
+    }).catch(error => dispatch(authError(error)))
   }
 }
 
-export function checkUser () {
-  firebase.auth().onAuthStateChanged((user) => {
-    console.log('user', user)
-    if (user) {
-      // User is signed in.
-      const displayName = user.displayName
-      const email = user.email
-      const emailVerified = user.emailVerified
-      const photoURL = user.photoURL
-      const isAnonymous = user.isAnonymous
-      const uid = user.uid
-      const providerData = user.providerData
-      console.log(displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData)
-
-      // ...
-    } else {
-      console.log('not logged in')
-      // User is signed out.
-      // ...
-    }
-  })
+export function userState () {
+  return dispatch => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setUser(user))
+      } else {
+        dispatch(setUser({}))
+      }
+    })
+  }
 }
 
 export function updateUser (userObj) {

@@ -1,25 +1,29 @@
 import React from 'react'
+import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
 class PrivateRouteContainer extends React.Component {
+  componentWillMount () {
+    console.log('PrivateRouteContainer', this.props.user)
+  }
+
   render () {
     const {
-      isAuthenticated,
+      user,
       component: Component,
       ...props
     } = this.props
-
     return (
       <Route
         {...props}
         render={props =>
-          isAuthenticated
+          !isEmpty(user)
             ? <Component {...props} />
             : (
               <Redirect to={{
                 pathname: '/login',
-                state: { from: props.location }
+                state: { from: props.location },
               }} />
             )
         }
@@ -28,8 +32,6 @@ class PrivateRouteContainer extends React.Component {
   }
 }
 
-const PrivateRoute = connect(state => ({
-  isAuthenticated: state.authReducer.isAuthenticated,
-}))(PrivateRouteContainer)
+const PrivateRoute = connect(state => ({user: state.authReducer.user}))(PrivateRouteContainer)
 
 export default PrivateRoute

@@ -5,6 +5,7 @@ import { Route, Redirect } from 'react-router-dom'
 
 class PrivateRouteContainer extends React.Component {
   componentWillMount () {
+    // Add wrapper for all routes?
     console.log('loading')
     // console.log('PrivateRouteContainer', this.props.user)
   }

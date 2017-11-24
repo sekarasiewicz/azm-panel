@@ -1,8 +1,9 @@
-import { SET_USER, AUTH_ERROR } from './constants'
+import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 
 const initialState = {
   user: {},
   error: {},
+  initializing: false,
 }
 
 export default (state = initialState, action = {}) => {
@@ -11,11 +12,17 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         user: action.user,
+        initializing: false,
       }
     case AUTH_ERROR:
       return {
         ...state,
         error: action.error,
+      }
+    case INITIALIZING:
+      return {
+        ...state,
+        initializing: action.initializing,
       }
     default: return state
   }

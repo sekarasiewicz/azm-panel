@@ -1,4 +1,4 @@
-import { SET_USER, AUTH_ERROR } from './constants'
+import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 import firebase from '../../lib/firebaseService'
 
 export function setUser (user) {
@@ -15,27 +15,28 @@ export function authError (error) {
   }
 }
 
-export function login (data) {
-  return dispatch => {
-    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
-      .then(user => dispatch(setUser(user)))
-      .catch(error => dispatch(authError(error)))
+export function initializing (initializing) {
+  return {
+    type: INITIALIZING,
+    initializing,
   }
+}
+
+export function login (data) {
+  return firebase.auth().signInWithEmailAndPassword(data.email, data.password)
 }
 
 export function logout () {
-  console.log('was here before')
-  return dispatch => {
-    console.log('was here dispatch')
-    firebase.auth().signOut().then(() => {
-      dispatch(setUser({}))
-    }).catch(error => dispatch(authError(error)))
-  }
+  // return dispatch => {
+  firebase.auth().signOut()
+  // .catch(error => dispatch(authError(error)))
 }
 
-export function userState () {
+export function initializeApp () {
   return dispatch => {
+    dispatch(initializing(true))
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('initializeApp', user)
       if (user) {
         dispatch(setUser(user))
       } else {
@@ -45,6 +46,7 @@ export function userState () {
   }
 }
 
+// Probably unnecessary
 export function updateUser (userObj) {
   const user = firebase.auth().currentUser
   user.updateProfile({

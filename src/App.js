@@ -6,21 +6,19 @@ import {
   Link,
 } from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute'
+import PropTypes from 'prop-types'
 import AppBar from './components/AppBar'
 import logo from './logo.svg'
 import './App.css'
 
-import { login, userState, updateUser } from './reducers/auth/actions'
+import { login, updateUser, logout } from './reducers/auth/actions'
 
-class App extends Component {
+class LoginForm extends Component {
   login = (e) => {
     e.preventDefault()
-    login({email: 'sekarasiewicz@gmail.com', password: 'sebastian'})
-  }
-
-  check = (e) => {
-    e.preventDefault()
-    userState()
+    login({email: 'sekarasiewicz@gmail.com', password: 'sebastian'}).then(u => {
+      this.context.router.history.push('/servants')
+    })
   }
 
   update = (e) => {
@@ -31,22 +29,38 @@ class App extends Component {
     })
   }
 
+  logout = (e) => {
+    e.preventDefault()
+    logout()
+  }
+
+  render () {
+    return (<div>
+      <p>Login</p>
+      <a href="#" onClick={this.login}>login</a>
+      <br />
+      <a href="#" onClick={this.userState}>Check User</a>
+      <br />
+      <a href="#" onClick={this.update}>Update User</a>
+      <br />
+      <a href="#" onClick={this.logout}>Logout</a>
+      <br />
+      <Link to="/servants">Servants</Link>
+    </div>)
+  }
+}
+
+LoginForm.contextTypes = {
+  router: PropTypes.object.isRequired,
+}
+
+class App extends Component {
   render () {
     return (
       <Router>
         <Switch>
           <Route path="/" exact component={() => <p>Home</p>}/>
-          <Route path="/login" component={() => <div>
-            <p>Login</p>
-            <a href="#" onClick={this.login}>login</a>
-            <br />
-            <a href="#" onClick={this.userState}>Check User</a>
-            <br />
-            <a href="#" onClick={this.update}>Update User</a>
-            <br />
-            <br />
-            <Link to="/servants">Servants</Link>
-          </div>}/>
+          <Route path="/login" component={LoginForm}/>
           <AppBar>
             <img src={logo} className="App-logo" alt="logo" />
             <Switch>

@@ -10,7 +10,7 @@ import purple from 'material-ui/colors/purple'
 import green from 'material-ui/colors/green'
 import red from 'material-ui/colors/red'
 import App from './App'
-import { userState } from './reducers/auth/actions'
+import { initializeApp } from './reducers/auth/actions'
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -35,7 +35,7 @@ const store = createStore(
 )
 
 // If User is already auth, set in reducer
-store.dispatch(userState())
+store.dispatch(initializeApp())
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

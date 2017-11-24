@@ -7,13 +7,17 @@ import {
 } from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute'
 import PropTypes from 'prop-types'
-import AppBar from './components/AppBar'
+import DefaultLayout from './components/DefaultLayout'
 import logo from './logo.svg'
 import './App.css'
 
 import { login, updateUser, logout } from './reducers/auth/actions'
 
 class LoginForm extends Component {
+  componentWillMount () {
+    console.log('LoginForm')
+  }
+
   login = (e) => {
     e.preventDefault()
     login({email: 'sekarasiewicz@gmail.com', password: 'sebastian'}).then(u => {
@@ -61,12 +65,11 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={() => <p>Home</p>}/>
           <Route path="/login" component={LoginForm}/>
-          <AppBar>
-            <img src={logo} className="App-logo" alt="logo" />
+          <DefaultLayout>
             <Switch>
               <PrivateRoute path="/servants" component={() => <p>Servants</p>}/>
             </Switch>
-          </AppBar>
+          </DefaultLayout>
         </Switch>
       </Router>
     )

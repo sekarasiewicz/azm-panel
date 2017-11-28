@@ -6,9 +6,6 @@ import { login } from '../../reducers/auth/actions'
 import { connect } from 'react-redux'
 
 class LoginPage extends React.Component {
-  componentWillMount () {
-    console.log('componentWillMount', this.props)
-  }
   componentWillReceiveProps (nextProps) {
     if (!isEmpty(nextProps.user)) {
       this.context.router.history.push(nextProps.redirectTo)

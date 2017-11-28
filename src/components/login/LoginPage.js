@@ -8,7 +8,23 @@ import { connect } from 'react-redux'
 class LoginPage extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (!isEmpty(nextProps.user)) {
-      this.context.router.history.push(nextProps.redirectTo)
+      const currentPath = this.context.router.route.location.pathname
+      if (nextProps.redirectTo === currentPath) {
+        this.context.router.history.push(nextProps.defaultPath)
+      } else {
+        this.context.router.history.push(nextProps.redirectTo)
+      }
+    }
+  }
+
+  componentWillMount () {
+    if (!isEmpty(this.props.user)) {
+      const currentPath = this.context.router.route.location.pathname
+      if (this.props.redirectTo === currentPath) {
+        this.context.router.history.push(this.props.defaultPath)
+      } else {
+        this.context.router.history.push(this.props.redirectTo)
+      }
     }
   }
 

@@ -3,8 +3,9 @@ import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 const initialState = {
   user: {},
   error: {},
-  redirectTo: '/servants',
   initializing: false,
+  redirectTo: '/servants',
+  defaultPath: '/servants',
 }
 
 export default (state = initialState, action = {}) => {
@@ -23,7 +24,7 @@ export default (state = initialState, action = {}) => {
     case INITIALIZING:
       return {
         ...state,
-        initializing: action.initializing,
+        ...action.initializing,
       }
     default: return state
   }

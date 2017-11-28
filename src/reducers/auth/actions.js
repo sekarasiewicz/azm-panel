@@ -16,6 +16,7 @@ export function authError (error) {
 }
 
 export function initializing (initializing) {
+  console.log('initializing', initializing)
   return {
     type: INITIALIZING,
     initializing,
@@ -45,7 +46,6 @@ export function initializeApp (redirectTo) {
       redirectTo: redirectTo,
     }))
     firebase.auth().onAuthStateChanged((user) => {
-      console.log('initializeApp', user)
       if (user) {
         dispatch(setUser(user))
       } else {

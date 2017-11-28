@@ -35,7 +35,7 @@ const store = createStore(
 )
 
 // If User is already auth, set in reducer
-store.dispatch(initializeApp())
+store.dispatch(initializeApp(window.location.pathname))
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

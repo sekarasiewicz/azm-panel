@@ -23,7 +23,13 @@ export function initializing (initializing) {
 }
 
 export function login (data) {
-  return firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+  return dispatch => {
+    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+      .catch(error => {
+        console.log('login error', error)
+        dispatch(authError(error))
+      })
+  }
 }
 
 export function logout () {
@@ -32,9 +38,12 @@ export function logout () {
   // .catch(error => dispatch(authError(error)))
 }
 
-export function initializeApp () {
+export function initializeApp (redirectTo) {
   return dispatch => {
-    dispatch(initializing(true))
+    dispatch(initializing({
+      initializing: true,
+      redirectTo: redirectTo,
+    }))
     firebase.auth().onAuthStateChanged((user) => {
       console.log('initializeApp', user)
       if (user) {

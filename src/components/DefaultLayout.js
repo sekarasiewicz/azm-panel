@@ -1,22 +1,37 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
+import { withStyles } from 'material-ui/styles'
 import Button from 'material-ui/Button'
+import { logout } from '../reducers/auth/actions'
 
-// Maybe keep initialize logic here ?
-const DefaultLayout = ({ children }) => (
-  <div>
+const styles = theme => ({
+  root: {
+    width: '100%',
+  },
+  flex: {
+    flex: 1,
+  },
+})
+
+const DefaultLayout = ({ children, classes }) => (
+  <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
-        <Typography type="title" color="inherit">
+        <Typography type="title" color="inherit" className={classes.flex}>
             Słudzy Azmodana
         </Typography>
+        <Button color="contrast" onClick={logout}>Logout</Button>
       </Toolbar>
     </AppBar>
-    <Button raised color="primary">Primary</Button>
     {children}
   </div>
 )
 
-export default DefaultLayout
+DefaultLayout.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(DefaultLayout)

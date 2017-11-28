@@ -33,6 +33,6 @@ class PrivateRouteContainer extends React.Component {
   }
 }
 
-const PrivateRoute = connect(state => state.authReducer)(PrivateRouteContainer)
+const PrivateRoute = connect(state => state.auth)(PrivateRouteContainer)
 
 export default PrivateRoute

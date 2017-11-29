@@ -15,11 +15,11 @@ export function authError (error) {
   }
 }
 
-export function initializing (initializing) {
-  console.log('initializing', initializing)
+export function initializing (data) {
+  console.log('initializing', data)
   return {
     type: INITIALIZING,
-    initializing,
+    data,
   }
 }
 

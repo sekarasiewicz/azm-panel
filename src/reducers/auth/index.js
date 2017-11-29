@@ -1,5 +1,7 @@
 import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 
+// MOve defaultPath to config file
+// user as null
 const initialState = {
   user: {},
   error: {},
@@ -24,7 +26,7 @@ export default (state = initialState, action = {}) => {
     case INITIALIZING:
       return {
         ...state,
-        ...action.initializing,
+        ...action.data,
       }
     default: return state
   }

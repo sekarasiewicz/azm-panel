@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import './App.css'
 
 const App = ({ user, initializing }) => (
-  <div>
+  <div id="root">
     { initializing
       ? <Loading/>
       : <Router>

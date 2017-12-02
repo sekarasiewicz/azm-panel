@@ -2,7 +2,7 @@ import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 
 const initialState = {
   user: null,
-  error: {},
+  error: null,
   initializing: false,
   redirectTo: '/servants',
 }

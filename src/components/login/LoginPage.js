@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
@@ -9,12 +8,14 @@ import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import IconButton from 'material-ui/IconButton'
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
-import { FormControl } from 'material-ui/Form'
+import { FormControl, FormHelperText } from 'material-ui/Form'
 import Visibility from 'material-ui-icons/Visibility'
 import VisibilityOff from 'material-ui-icons/VisibilityOff'
 import compose from 'recompose/compose'
 import { login } from '../../reducers/auth/actions'
 import { DEFAULT_PATH } from '../../lib/config'
+
+const AUTH_WRONG_PASSWORD = 'auth/wrong-password'
 
 const styles = theme => ({
   root: {
@@ -40,11 +41,6 @@ const styles = theme => ({
     color: theme.palette.getContrastText(theme.palette.primary[500]),
     height: 50,
   },
-  alert: {
-    backgroundColor: theme.palette.error[500],
-    color: theme.palette.getContrastText(theme.palette.error[500]),
-    padding: theme.spacing.unit,
-  },
 })
 
 class LoginPage extends React.Component {
@@ -52,6 +48,7 @@ class LoginPage extends React.Component {
     email: '',
     password: '',
     showPassword: false,
+    isLoading: false,
   }
 
   componentWillReceiveProps (nextProps) {
@@ -62,6 +59,8 @@ class LoginPage extends React.Component {
       } else {
         this.context.router.history.push(nextProps.redirectTo)
       }
+    } else {
+      this.setState({isLoading: false})
     }
   }
 
@@ -85,19 +84,23 @@ class LoginPage extends React.Component {
   };
 
   handleClickShowPasssword = () => {
-    this.setState({ showPassword: !this.state.showPassword });
+    this.setState({ showPassword: !this.state.showPassword })
   };
 
   onLogin = () => {
-    console.log(this.state)
     this.props.login({
       email: this.state.email,
       password: this.state.password,
     })
+    this.setState({isLoading: true})
   }
 
   render () {
+    console.log('RENDER !')
     const { classes, error } = this.props
+    const { isLoading } = this.state
+    const passwordError = error && error.code === AUTH_WRONG_PASSWORD
+    const otherError = error && error.code !== AUTH_WRONG_PASSWORD
     return (<div
       className={classes.root}
     >
@@ -118,18 +121,17 @@ class LoginPage extends React.Component {
             justify="center"
             className={classes.form}
           >
-            {error &&
-              // TODO make component for message
-              <Paper className={classes.alert}>{error.message}</Paper>
-            }
-            <TextField
-              id="email"
-              label="email"
-              margin="normal"
-              className={classes.formControl}
-              onChange={this.handleChange('email')}
-            />
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} error={otherError}>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                id="email"
+                type= 'text'
+                value={this.state.email}
+                onChange={this.handleChange('email')}
+              />
+              <FormHelperText>{otherError && error.message}</FormHelperText>
+            </FormControl>
+            <FormControl className={classes.formControl} error={passwordError}>
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input
                 id="password"
@@ -147,8 +149,9 @@ class LoginPage extends React.Component {
                   </InputAdornment>
                 }
               />
+              <FormHelperText>{passwordError && error.message}</FormHelperText>
             </FormControl>
-            <Button raised color="primary" onClick={this.onLogin}>Login</Button>
+            <Button raised color="primary" onClick={this.onLogin} disabled={isLoading}>Login</Button>
           </Grid>
         </Paper>
       </Grid>

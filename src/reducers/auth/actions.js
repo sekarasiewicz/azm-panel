@@ -32,9 +32,7 @@ export function login (data) {
 }
 
 export function logout () {
-  // return dispatch => {
   firebase.auth().signOut()
-  // .catch(error => dispatch(authError(error)))
 }
 
 export function initializeApp (redirectTo) {

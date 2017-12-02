@@ -1,10 +1,11 @@
 import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
+import { DEFAULT_PATH } from '../../lib/config'
 
 const initialState = {
   user: null,
   error: null,
   initializing: false,
-  redirectTo: '/servants',
+  redirectTo: DEFAULT_PATH,
 }
 
 export default (state = initialState, action = {}) => {

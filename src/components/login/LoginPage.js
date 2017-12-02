@@ -7,6 +7,11 @@ import { withStyles } from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
+import IconButton from 'material-ui/IconButton'
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
+import { FormControl } from 'material-ui/Form'
+import Visibility from 'material-ui-icons/Visibility'
+import VisibilityOff from 'material-ui-icons/VisibilityOff'
 import compose from 'recompose/compose'
 import { login } from '../../reducers/auth/actions'
 import { DEFAULT_PATH } from '../../lib/config'
@@ -24,6 +29,9 @@ const styles = theme => ({
     padding: 16,
     textAlign: 'center',
   },
+  formControl: {
+    margin: theme.spacing.unit,
+  },
   panelHeader: {
     display: 'flex',
     justifyContent: 'center',
@@ -40,6 +48,12 @@ const styles = theme => ({
 })
 
 class LoginPage extends React.Component {
+  state = {
+    email: '',
+    password: '',
+    showPassword: false,
+  }
+
   componentWillReceiveProps (nextProps) {
     if (nextProps.user) {
       const currentPath = this.context.router.route.location.pathname
@@ -62,10 +76,23 @@ class LoginPage extends React.Component {
     }
   }
 
-  onLogin = (e) => {
+  handleChange = prop => event => {
+    this.setState({ [prop]: event.target.value })
+  };
+
+  handleMouseDownPassword = event => {
+    event.preventDefault()
+  };
+
+  handleClickShowPasssword = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
+  onLogin = () => {
+    console.log(this.state)
     this.props.login({
-      email: '',
-      password: '',
+      email: this.state.email,
+      password: this.state.password,
     })
   }
 
@@ -92,20 +119,35 @@ class LoginPage extends React.Component {
             className={classes.form}
           >
             {error &&
+              // TODO make component for message
               <Paper className={classes.alert}>{error.message}</Paper>
             }
             <TextField
               id="email"
               label="email"
               margin="normal"
+              className={classes.formControl}
+              onChange={this.handleChange('email')}
             />
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              margin="normal"
-            />
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                id="password"
+                type={this.state.showPassword ? 'text' : 'password'}
+                value={this.state.password}
+                onChange={this.handleChange('password')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickShowPasssword}
+                      onMouseDown={this.handleMouseDownPassword}
+                    >
+                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
             <Button raised color="primary" onClick={this.onLogin}>Login</Button>
           </Grid>
         </Paper>

@@ -35,8 +35,6 @@ const store = createStore(
 )
 
 // If User is already auth, set in reducer
-// this will not work, because, it will be redirected and catch again ?
-console.log(window.location.pathname)
 store.dispatch(initializeApp(window.location.pathname))
 
 ReactDOM.render(

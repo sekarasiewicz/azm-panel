@@ -1,25 +1,24 @@
 import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
 import firebase from '../../lib/firebaseService'
 
-export function setUser (user) {
+export function setUser (payload) {
   return {
     type: SET_USER,
-    user,
+    payload,
   }
 }
 
-export function authError (error) {
+export function authError (payload) {
   return {
     type: AUTH_ERROR,
-    error,
+    payload,
   }
 }
 
-export function initializing (data) {
-  console.log('initializing', data)
+export function initializing (payload) {
   return {
     type: INITIALIZING,
-    data,
+    payload,
   }
 }
 
@@ -27,7 +26,6 @@ export function login (data) {
   return dispatch => {
     firebase.auth().signInWithEmailAndPassword(data.email, data.password)
       .catch(error => {
-        console.log('login error', error)
         dispatch(authError(error))
       })
   }
@@ -46,11 +44,7 @@ export function initializeApp (redirectTo) {
       redirectTo: redirectTo,
     }))
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        dispatch(setUser(user))
-      } else {
-        dispatch(setUser({}))
-      }
+      dispatch(setUser(user))
     })
   }
 }

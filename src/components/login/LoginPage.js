@@ -1,18 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import isEmpty from 'lodash/isEmpty'
 import Button from 'material-ui/Button'
 import { login } from '../../reducers/auth/actions'
 import { connect } from 'react-redux'
+import { DEFAULT_PATH } from '../../lib/config'
 
 class LoginPage extends React.Component {
   componentWillReceiveProps (nextProps) {
-    // Consider this.context.router.route.location.pathname
-    // nextProps.redirectTo === currentPath, some different cases
-    if (!isEmpty(nextProps.user)) {
+    if (nextProps.user) {
       const currentPath = this.context.router.route.location.pathname
       if (nextProps.redirectTo === currentPath || nextProps.redirectTo === '/') {
-        this.context.router.history.push(nextProps.defaultPath)
+        this.context.router.history.push(DEFAULT_PATH)
       } else {
         this.context.router.history.push(nextProps.redirectTo)
       }
@@ -20,7 +18,7 @@ class LoginPage extends React.Component {
   }
 
   componentWillMount () {
-    if (!isEmpty(this.props.user)) {
+    if (this.props.user) {
       const currentPath = this.context.router.route.location.pathname
       if (this.props.redirectTo === currentPath || this.props.redirectTo === '/') {
         this.context.router.history.push(this.props.defaultPath)

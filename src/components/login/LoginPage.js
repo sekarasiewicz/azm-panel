@@ -6,12 +6,9 @@ import { withStyles } from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
-import IconButton from 'material-ui/IconButton'
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
-import { FormControl, FormHelperText } from 'material-ui/Form'
-import Visibility from 'material-ui-icons/Visibility'
-import VisibilityOff from 'material-ui-icons/VisibilityOff'
 import compose from 'recompose/compose'
+import PasswordInput from '../inputs/PasswordInput'
+import TextInput from '../inputs/TextInput'
 import { login } from '../../reducers/auth/actions'
 import { DEFAULT_PATH } from '../../lib/config'
 
@@ -47,7 +44,6 @@ class LoginPage extends React.Component {
   state = {
     email: '',
     password: '',
-    showPassword: false,
     isLoading: false,
   }
 
@@ -79,14 +75,6 @@ class LoginPage extends React.Component {
     this.setState({ [prop]: event.target.value })
   };
 
-  handleMouseDownPassword = event => {
-    event.preventDefault()
-  };
-
-  handleClickShowPasssword = () => {
-    this.setState({ showPassword: !this.state.showPassword })
-  };
-
   onLogin = () => {
     this.props.login({
       email: this.state.email,
@@ -96,7 +84,6 @@ class LoginPage extends React.Component {
   }
 
   render () {
-    console.log('RENDER !')
     const { classes, error } = this.props
     const { isLoading } = this.state
     const passwordError = error && error.code === AUTH_WRONG_PASSWORD
@@ -121,36 +108,18 @@ class LoginPage extends React.Component {
             justify="center"
             className={classes.form}
           >
-            <FormControl className={classes.formControl} error={otherError}>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input
-                id="email"
-                type= 'text'
-                value={this.state.email}
-                onChange={this.handleChange('email')}
-              />
-              <FormHelperText>{otherError && error.message}</FormHelperText>
-            </FormControl>
-            <FormControl className={classes.formControl} error={passwordError}>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                id="password"
-                type={this.state.showPassword ? 'text' : 'password'}
-                value={this.state.password}
-                onChange={this.handleChange('password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={this.handleClickShowPasssword}
-                      onMouseDown={this.handleMouseDownPassword}
-                    >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              <FormHelperText>{passwordError && error.message}</FormHelperText>
-            </FormControl>
+            <TextInput
+              id="email"
+              error={otherError && error.message}
+              onChange={this.handleChange('email')}
+              value={this.state.email}
+            />
+            <PasswordInput
+              id="password"
+              error={passwordError && error.message}
+              onChange={this.handleChange('password')}
+              value={this.state.password}
+            />
             <Button raised color="primary" onClick={this.onLogin} disabled={isLoading}>Login</Button>
           </Grid>
         </Paper>

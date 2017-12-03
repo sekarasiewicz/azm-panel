@@ -14,11 +14,14 @@ const styles = theme => ({
   flex: {
     flex: 1,
   },
+  appBar: {
+    marginBottom: 20,
+  },
 })
 
 const DefaultLayout = ({ children, classes }) => (
   <div className={classes.root}>
-    <AppBar position="static">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <Typography type="title" color="inherit" className={classes.flex}>
             Słudzy Azmodana

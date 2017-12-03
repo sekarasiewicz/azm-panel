@@ -16,11 +16,7 @@ const AUTH_WRONG_PASSWORD = 'auth/wrong-password'
 
 const styles = theme => ({
   root: {
-    display: 'flex',
     flexGrow: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     minHeight: '100%',
   },
   form: {
@@ -88,13 +84,17 @@ class LoginPage extends React.Component {
     const { isLoading } = this.state
     const passwordError = error && error.code === AUTH_WRONG_PASSWORD
     const otherError = error && error.code !== AUTH_WRONG_PASSWORD
-    return (<div
+    return (<Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
       className={classes.root}
     >
       <Grid
         item
         xs={12}
-        sm={3}
+        sm={4}
       >
         <Paper>
           <Typography
@@ -124,7 +124,7 @@ class LoginPage extends React.Component {
           </Grid>
         </Paper>
       </Grid>
-    </div>)
+    </Grid>)
   }
 }
 

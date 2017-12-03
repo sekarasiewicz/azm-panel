@@ -6,8 +6,8 @@ import {
   Redirect,
 } from 'react-router-dom'
 import DefaultLayout from './components/DefaultLayout'
-import LoginPage from './components/login/LoginPage'
-import ServantsPage from './components/servants/ServantsPage'
+import LoginPage from './components/pages/LoginPage'
+import ServantsPage from './components/pages/ServantsPage'
 import Loading from './components/Loading'
 import NoMatch from './components/NoMatch'
 import { connect } from 'react-redux'

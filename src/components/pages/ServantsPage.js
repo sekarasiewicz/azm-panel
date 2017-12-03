@@ -5,6 +5,16 @@ import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
+import List, {
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+} from 'material-ui/List'
+import Avatar from 'material-ui/Avatar'
+import IconButton from 'material-ui/IconButton'
+import FolderIcon from 'material-ui-icons/Folder'
+import DeleteIcon from 'material-ui-icons/Delete'
 
 const styles = theme => ({
   root: {
@@ -49,6 +59,58 @@ class ServantsPage extends React.Component {
             className={classes.panelHeader}>
             Servants
           </Typography>
+          <div className={classes.demo}>
+            <List dense={false}>
+              <ListItem button>
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Single-line item"
+                  secondary="Secondary text"
+                />
+                <ListItemSecondaryAction>
+                  <IconButton aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem button>
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Single-line item"
+                  secondary="Secondary text"
+                />
+                <ListItemSecondaryAction>
+                  <IconButton aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem button>
+                <ListItemAvatar>
+                  <Avatar>
+                    <FolderIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Single-line item"
+                  secondary="Secondary text"
+                />
+                <ListItemSecondaryAction>
+                  <IconButton aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
         </Paper>
       </Grid>
       <Button fab color="primary" aria-label="add" className={classes.fab}>

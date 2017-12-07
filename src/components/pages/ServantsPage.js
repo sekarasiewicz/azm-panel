@@ -1,5 +1,7 @@
 import React from 'react'
 import { withStyles } from 'material-ui/styles'
+import { connect } from 'react-redux'
+import compose from 'recompose/compose'
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
@@ -15,6 +17,11 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
+import {
+  addServantListener,
+  saveServant,
+  deleteServant,
+} from '../../reducers/servants/actions'
 
 const styles = theme => ({
   root: {
@@ -39,8 +46,33 @@ const styles = theme => ({
 })
 
 class ServantsPage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.props.addServantListener()
+  }
+
+  newServant = () => {
+    saveServant({
+      name: 'Seba',
+      nick: 'Othil',
+      status: true,
+      year: 1983,
+      from: 2000,
+      battleTag: 'Othil#2978',
+      rank: 'founders',
+      ranks: {
+        founders: true,
+      },
+    })
+  }
+
+  removeServant = key => () => {
+    deleteServant(key)
+  }
+
   render () {
-    const { classes } = this.props
+    const { classes, servants } = this.props
+    const servantObjKeys = servants && Object.keys(servants)
     return (<Grid
       container
       direction="row"
@@ -61,62 +93,43 @@ class ServantsPage extends React.Component {
           </Typography>
           <div className={classes.demo}>
             <List dense={false}>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Single-line item"
-                  secondary="Secondary text"
-                />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Single-line item"
-                  secondary="Secondary text"
-                />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Single-line item"
-                  secondary="Secondary text"
-                />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
+              {servantObjKeys && servantObjKeys.map(key => (
+                <ListItem button key={key}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={servants[key].nick}
+                    secondary={key}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Delete" onClick={this.removeServant(key)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             </List>
           </div>
         </Paper>
       </Grid>
-      <Button fab color="primary" aria-label="add" className={classes.fab}>
+      <Button
+        fab color="primary"
+        aria-label="add"
+        className={classes.fab}
+        onClick={this.newServant}
+      >
         <AddIcon />
       </Button>
     </Grid>)
   }
 }
-export default withStyles(styles)(ServantsPage)
+
+export default compose(
+  withStyles(styles),
+  connect(state => state.servants, {
+    addServantListener,
+  }),
+)(ServantsPage)

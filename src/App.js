@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import DefaultLayout from './components/DefaultLayout'
 import LoginPage from './components/pages/LoginPage'
+import RanksPage from './components/pages/RanksPage'
 import ServantsPage from './components/pages/ServantsPage'
 import Loading from './components/Loading'
 import NoMatch from './components/NoMatch'
@@ -26,8 +27,8 @@ const App = ({ user, initializing }) => (
           <DefaultLayout>
             <Switch>
               <Route path="/servants" component={ServantsPage} />
-              <Route path="/404" component={NoMatch} />
-              <Redirect to="/404" />
+              <Route path="/ranks" component={RanksPage} />
+              <Route component={NoMatch} />
             </Switch>
           </DefaultLayout>
           }

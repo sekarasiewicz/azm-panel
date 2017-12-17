@@ -18,10 +18,10 @@ import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
 import {
-  addServantListener,
-  saveServant,
-  deleteServant,
-} from '../../reducers/servants/actions'
+  addRankListener,
+  saveRank,
+  deleteRank,
+} from '../../reducers/ranks/actions'
 
 const styles = theme => ({
   root: {
@@ -45,34 +45,26 @@ const styles = theme => ({
   },
 })
 
-class ServantsPage extends React.Component {
+class RanksPage extends React.Component {
   constructor (props) {
     super(props)
-    this.props.addServantListener()
+    this.props.addRankListener()
   }
 
-  newServant = () => {
-    saveServant('seba', {
-      name: 'Seba',
-      nick: 'Othil',
-      status: true,
-      year: 1983,
-      from: 2000,
-      battleTag: 'Othil#2978',
-      rank: 'founders',
-      ranks: {
-        founders: true,
-      },
+  newRank = () => {
+    saveRank('Servant', {
+      display: 'Something',
+      level: 100,
     })
   }
 
-  removeServant = key => () => {
-    deleteServant(key)
+  removeRank = key => () => {
+    deleteRank(key)
   }
 
   render () {
-    const { classes, servants } = this.props
-    const servantObjKeys = servants && Object.keys(servants)
+    const { classes, ranks } = this.props
+    const rankObjKeys = ranks && Object.keys(ranks)
     return (<Grid
       container
       direction="row"
@@ -89,11 +81,11 @@ class ServantsPage extends React.Component {
           <Typography
             type="headline"
             className={classes.panelHeader}>
-            Servants
+            Ranks
           </Typography>
           <div>
             <List dense={false}>
-              {servantObjKeys && servantObjKeys.map(key => (
+              {rankObjKeys && rankObjKeys.map(key => (
                 <ListItem button key={key}>
                   <ListItemAvatar>
                     <Avatar>
@@ -101,11 +93,11 @@ class ServantsPage extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={servants[key].nick}
+                    primary={ranks[key].display}
                     secondary={key}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete" onClick={this.removeServant(key)}>
+                    <IconButton aria-label="Delete" onClick={this.removeRank(key)}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -119,7 +111,7 @@ class ServantsPage extends React.Component {
         fab color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={this.newServant}
+        onClick={this.newRank}
       >
         <AddIcon />
       </Button>
@@ -129,7 +121,7 @@ class ServantsPage extends React.Component {
 
 export default compose(
   withStyles(styles),
-  connect(state => state.servants, {
-    addServantListener,
+  connect(state => state.ranks, {
+    addRankListener,
   }),
-)(ServantsPage)
+)(RanksPage)

@@ -4,7 +4,7 @@ import { DEFAULT_PATH } from '../../lib/config'
 const initialState = {
   user: null,
   error: null,
-  initializing: false,
+  initializing: true,
   redirectTo: DEFAULT_PATH,
 }
 

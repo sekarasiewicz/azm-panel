@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './rootReducer'
+import rootReducer from './reducers'
 
 import purple from 'material-ui/colors/purple'
 import green from 'material-ui/colors/green'

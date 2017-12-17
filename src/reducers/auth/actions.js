@@ -37,10 +37,8 @@ export function logout () {
 
 export function initializeApp (redirectTo) {
   return dispatch => {
-    dispatch(initializing({
-      initializing: true,
-      redirectTo: redirectTo,
-    }))
+    // TODO Think about this redirect to pack it in one action
+    dispatch(initializing({ redirectTo: redirectTo }))
     firebase.auth().onAuthStateChanged((user) => {
       dispatch(setUser(user))
     })

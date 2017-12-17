@@ -17,6 +17,7 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
+import AlertDialog from '../dialogs/AlertDialog'
 import {
   addServantListener,
   saveServant,
@@ -46,6 +47,11 @@ const styles = theme => ({
 })
 
 class ServantsPage extends React.Component {
+  state ={
+    confirmOpen: false,
+    currentServantKey: null,
+  }
+
   constructor (props) {
     super(props)
     this.props.addServantListener()
@@ -66,8 +72,21 @@ class ServantsPage extends React.Component {
     })
   }
 
-  removeServant = key => () => {
-    deleteServant(key)
+  handleAlertDialogClose = () => {
+    this.setState({confirmOpen: false})
+  }
+
+  handleAlertDialogConfirm = () => {
+    this.setState({
+      confirmOpen: false,
+    }, () => deleteServant(this.state.currentServantKey))
+  }
+
+  handleDelete = key => () => {
+    this.setState({
+      confirmOpen: true,
+      currentServantKey: key,
+    })
   }
 
   render () {
@@ -105,7 +124,9 @@ class ServantsPage extends React.Component {
                     secondary={key}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete" onClick={this.removeServant(key)}>
+                    <IconButton aria-label="Delete"
+                      onClick={this.handleDelete(key)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -123,6 +144,13 @@ class ServantsPage extends React.Component {
       >
         <AddIcon />
       </Button>
+      <AlertDialog
+        title="Confirm: Delete Servant"
+        text="Do you really want to delete Servant?"
+        open={this.state.confirmOpen}
+        handleClose={this.handleAlertDialogClose}
+        handleConfirm={this.handleAlertDialogConfirm}
+      />
     </Grid>)
   }
 }

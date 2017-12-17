@@ -98,6 +98,7 @@ class ServantsPage extends React.Component {
       justify="center"
       alignItems="center"
       className={classes.root}
+      spacing={0}
     >
       <Grid
         item

@@ -17,6 +17,7 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
+import AlertDialog from '../dialogs/AlertDialog'
 import {
   addRankListener,
   saveRank,
@@ -46,6 +47,11 @@ const styles = theme => ({
 })
 
 class RanksPage extends React.Component {
+  state ={
+    confirmOpen: false,
+    currentRankKey: null,
+  }
+
   constructor (props) {
     super(props)
     this.props.addRankListener()
@@ -58,8 +64,19 @@ class RanksPage extends React.Component {
     })
   }
 
+  handleAlertDialogClose = () => this.setState({confirmOpen: false})
+
+  handleAlertDialogConfirm = () => {
+    this.setState({
+      confirmOpen: false,
+    }, () => deleteRank(this.state.currentRankKey))
+  }
+
   removeRank = key => () => {
-    deleteRank(key)
+    this.setState({
+      confirmOpen: true,
+      currentRankKey: key,
+    })
   }
 
   render () {
@@ -116,6 +133,13 @@ class RanksPage extends React.Component {
       >
         <AddIcon />
       </Button>
+      <AlertDialog
+        title="Confirm: Delete Rank"
+        text="Do you really want to delete Rank? It will leave Servants With This Rank Without Rank!"
+        open={this.state.confirmOpen}
+        handleClose={this.handleAlertDialogClose}
+        handleConfirm={this.handleAlertDialogConfirm}
+      />
     </Grid>)
   }
 }

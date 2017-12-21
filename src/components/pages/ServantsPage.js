@@ -72,9 +72,7 @@ class ServantsPage extends React.Component {
     })
   }
 
-  handleAlertDialogClose = () => {
-    this.setState({confirmOpen: false})
-  }
+  handleAlertDialogClose = () => this.setState({confirmOpen: false})
 
   handleAlertDialogConfirm = () => {
     this.setState({
@@ -82,7 +80,7 @@ class ServantsPage extends React.Component {
     }, () => deleteServant(this.state.currentServantKey))
   }
 
-  handleDelete = key => () => {
+  removeServant = key => () => {
     this.setState({
       confirmOpen: true,
       currentServantKey: key,
@@ -126,7 +124,7 @@ class ServantsPage extends React.Component {
                   />
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Delete"
-                      onClick={this.handleDelete(key)}
+                      onClick={this.removeServant(key)}
                     >
                       <DeleteIcon />
                     </IconButton>

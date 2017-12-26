@@ -17,7 +17,7 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
-import AlertDialog from '../dialogs/AlertDialog'
+import UniversalDialog from '../UniversalDialog'
 import {
   addServantListener,
   saveServant,
@@ -143,9 +143,9 @@ class ServantsPage extends React.Component {
       >
         <AddIcon />
       </Button>
-      <AlertDialog
+      <UniversalDialog
         title="Confirm: Delete Servant"
-        text="Do you really want to delete Servant?"
+        desc="Do you really want to delete Servant?"
         open={this.state.confirmOpen}
         handleClose={this.handleAlertDialogClose}
         handleConfirm={this.handleAlertDialogConfirm}

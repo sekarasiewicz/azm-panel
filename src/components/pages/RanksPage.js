@@ -17,7 +17,7 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
-import AlertDialog from '../dialogs/AlertDialog'
+import UniversalDialog from '../UniversalDialog'
 import {
   addRankListener,
   saveRank,
@@ -133,9 +133,9 @@ class RanksPage extends React.Component {
       >
         <AddIcon />
       </Button>
-      <AlertDialog
+      <UniversalDialog
         title="Confirm: Delete Rank"
-        text="Do you really want to delete Rank? It will leave Servants With This Rank Without Rank!"
+        desc="Do you really want to delete Rank? It will leave Servants With This Rank Without Rank!"
         open={this.state.confirmOpen}
         handleClose={this.handleAlertDialogClose}
         handleConfirm={this.handleAlertDialogConfirm}

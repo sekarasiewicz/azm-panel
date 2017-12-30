@@ -1,40 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import { connect } from 'react-redux'
 import compose from 'recompose/compose'
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
-import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
-import List, {
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-} from 'material-ui/List'
-import Avatar from 'material-ui/Avatar'
-import IconButton from 'material-ui/IconButton'
-import FolderIcon from 'material-ui-icons/Folder'
-import DeleteIcon from 'material-ui-icons/Delete'
-import UniversalDialog from '../UniversalDialog'
+import BaseDialog from '../dialogs/BaseDialog'
 import {
   addServantListener,
   saveServant,
   deleteServant,
 } from '../../reducers/servants/actions'
+import ServantsList from '../lists/ServantsList'
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-  },
-  panelHeader: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.palette.primary[500],
-    color: theme.palette.getContrastText(theme.palette.primary[500]),
-    height: 50,
   },
   fab: {
     margin: 0,
@@ -88,8 +70,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants } = this.props
-    const servantObjKeys = servants && Object.keys(servants)
+    const { classes } = this.props
     return (<Grid
       container
       direction="row"
@@ -103,37 +84,7 @@ class ServantsPage extends React.Component {
         xs={12}
         sm={10}
       >
-        <Paper>
-          <Typography
-            type="headline"
-            className={classes.panelHeader}>
-            Servants
-          </Typography>
-          <div>
-            <List dense={false}>
-              {servantObjKeys && servantObjKeys.map(key => (
-                <ListItem button key={key}>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={servants[key].nick}
-                    secondary={key}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete"
-                      onClick={this.removeServant(key)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Paper>
+        <ServantsList removeServant={this.removeServant} />
       </Grid>
       <Button
         fab color="primary"
@@ -143,7 +94,7 @@ class ServantsPage extends React.Component {
       >
         <AddIcon />
       </Button>
-      <UniversalDialog
+      <BaseDialog
         title="Confirm: Delete Servant"
         desc="Do you really want to delete Servant?"
         open={this.state.confirmOpen}
@@ -154,9 +105,13 @@ class ServantsPage extends React.Component {
   }
 }
 
+ServantsPage.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
 export default compose(
   withStyles(styles),
-  connect(state => state.servants, {
+  connect(null, {
     addServantListener,
   }),
 )(ServantsPage)

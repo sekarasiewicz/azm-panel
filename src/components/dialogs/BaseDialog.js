@@ -8,7 +8,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog'
 
-const UniversalDialog = ({ open, handleClose, handleConfirm, title, desc, child }) => (
+const BaseDialog = ({ open, handleClose, handleConfirm, title, desc, child }) => (
   <div>
     <Dialog
       open={open}
@@ -37,7 +37,7 @@ const UniversalDialog = ({ open, handleClose, handleConfirm, title, desc, child 
   </div>
 )
 
-UniversalDialog.propTypes = {
+BaseDialog.propTypes = {
   title: PropTypes.string,
   desc: PropTypes.string,
   child: PropTypes.object,
@@ -46,4 +46,4 @@ UniversalDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
 }
 
-export default UniversalDialog
+export default BaseDialog

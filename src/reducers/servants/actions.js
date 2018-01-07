@@ -6,7 +6,11 @@ export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: ser
 const servantRef = firebase.database().ref('servants/')
 
 export const saveServant = (key, servant) => {
-  servantRef.child(key).set(servant)
+  if (key) {
+    servantRef.child(key).set(servant)
+  } else {
+    servantRef.push().set(servant)
+  }
 }
 
 export const deleteServant = (key) => {

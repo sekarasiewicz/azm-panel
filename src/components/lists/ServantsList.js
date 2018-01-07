@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import compose from 'recompose/compose'
-import { connect } from 'react-redux'
 import { withStyles } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
@@ -32,7 +30,6 @@ const ServantsList = ({classes, servants, removeServant}) => (
     <Typography
       type="headline"
       className={classes.panelHeader}>
-      Servants
     </Typography>
     <List dense={false}>
       {servants && Object.keys(servants).map(key => (
@@ -61,11 +58,8 @@ const ServantsList = ({classes, servants, removeServant}) => (
 
 ServantsList.propTypes = {
   classes: PropTypes.object.isRequired,
-  servants: PropTypes.object.isRequired,
   removeServant: PropTypes.func.isRequired,
+  servants: PropTypes.object,
 }
 
-export default compose(
-  withStyles(styles),
-  connect(state => state.servants),
-)(ServantsList)
+export default withStyles(styles)(ServantsList)

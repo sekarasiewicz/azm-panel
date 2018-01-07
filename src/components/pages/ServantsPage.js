@@ -7,6 +7,7 @@ import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
 import BaseDialog from '../dialogs/BaseDialog'
+import ServantDialog from '../dialogs/ServantDialog'
 import {
   addServantListener,
   saveServant,
@@ -31,6 +32,7 @@ const styles = theme => ({
 class ServantsPage extends React.Component {
   state ={
     confirmOpen: false,
+    servantOpen: false,
     currentServantKey: null,
   }
 
@@ -39,22 +41,21 @@ class ServantsPage extends React.Component {
     this.props.addServantListener()
   }
 
+  handleServantDialogConfirm = (servant) => () => {
+    console.log(servant)
+    this.setState({
+      servantOpen: true,
+    })
+  }
+
   newServant = () => {
-    saveServant('seba', {
-      name: 'Seba',
-      nick: 'Othil',
-      status: true,
-      year: 1983,
-      from: 2000,
-      battleTag: 'Othil#2978',
-      rank: 'founders',
-      ranks: {
-        founders: true,
-      },
+    this.setState({
+      servantOpen: true,
     })
   }
 
   handleAlertDialogClose = () => this.setState({confirmOpen: false})
+  handleServantDialogClose = () => this.setState({servantOpen: false})
 
   handleAlertDialogConfirm = () => {
     this.setState({
@@ -70,7 +71,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes } = this.props
+    const { classes, servants } = this.props
     return (<Grid
       container
       direction="row"
@@ -84,7 +85,10 @@ class ServantsPage extends React.Component {
         xs={12}
         sm={10}
       >
-        <ServantsList removeServant={this.removeServant} />
+        <ServantsList
+          removeServant={this.removeServant}
+          servants={servants}
+        />
       </Grid>
       <Button
         fab color="primary"
@@ -101,17 +105,23 @@ class ServantsPage extends React.Component {
         handleClose={this.handleAlertDialogClose}
         handleConfirm={this.handleAlertDialogConfirm}
       />
+      <ServantDialog
+        open={this.state.servantOpen}
+        handleClose={this.handleServantDialogClose}
+        handleConfirm={this.handleServantDialogConfirm}
+      />
     </Grid>)
   }
 }
 
 ServantsPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  servants: PropTypes.object,
 }
 
 export default compose(
   withStyles(styles),
-  connect(null, {
+  connect(state => state.servants, {
     addServantListener,
   }),
 )(ServantsPage)

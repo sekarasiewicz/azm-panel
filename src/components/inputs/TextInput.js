@@ -10,23 +10,18 @@ const styles = theme => ({
   },
 })
 
-class TextInput extends React.Component {
-  render () {
-    const { id, value, error, onChange, classes } = this.props
-    return (
-      <FormControl className={classes.formControl} error={error}>
-        <InputLabel htmlFor={id}>Email</InputLabel>
-        <Input
-          id={id}
-          type= 'text'
-          value={value}
-          onChange={onChange}
-        />
-        <FormHelperText>{error}</FormHelperText>
-      </FormControl>
-    )
-  }
-}
+const TextInput = ({ id, label, value, error, onChange, classes }) => (
+  <FormControl className={classes.formControl} error={error}>
+    <InputLabel htmlFor={id}>{label}</InputLabel>
+    <Input
+      id={id}
+      type= 'text'
+      value={value}
+      onChange={onChange}
+    />
+    <FormHelperText>{error}</FormHelperText>
+  </FormControl>
+)
 
 TextInput.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -34,6 +29,7 @@ TextInput.propTypes = {
   value: PropTypes.string,
   error: PropTypes.string,
   id: PropTypes.string,
+  label: PropTypes.string,
 }
 
 export default withStyles(styles)(TextInput)

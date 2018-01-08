@@ -110,6 +110,7 @@ class LoginPage extends React.Component {
           >
             <TextInput
               id="email"
+              label="Email"
               error={otherError && error.message}
               onChange={this.handleChange('email')}
               value={this.state.email}

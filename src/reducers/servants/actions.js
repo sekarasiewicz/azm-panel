@@ -7,9 +7,9 @@ const servantRef = firebase.database().ref('servants/')
 
 export const saveServant = (key, servant) => {
   if (key) {
-    servantRef.child(key).set(servant)
+    return servantRef.child(key).set(servant)
   } else {
-    servantRef.push().set(servant)
+    return servantRef.push().set(servant)
   }
 }
 
@@ -23,4 +23,8 @@ export const addServantListener = () => {
       dispatch(servantsChange(snapshot.val()))
     })
   }
+}
+
+export const detachServantListener = () => {
+  servantRef.off()
 }

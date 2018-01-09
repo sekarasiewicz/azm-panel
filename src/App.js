@@ -12,31 +12,50 @@ import ServantsPage from './components/pages/ServantsPage'
 import Loading from './components/Loading'
 import NoMatch from './components/NoMatch'
 import { connect } from 'react-redux'
+import { addRankListener, detachRankListener } from './reducers/ranks/actions'
+import { addServantListener, detachServantListener } from './reducers/servants/actions'
 import './App.css'
 
-// TODO Keep path in 404
-const App = ({ user, initializing }) => (
-  <div id="root">
-    { initializing
-      ? <Loading />
-      : <Router>
-        <Switch>
-          <Redirect from="/" exact to="/login" />
-          <Route path="/login" component={LoginPage} />
-          { user &&
-          <DefaultLayout>
-            <Switch>
-              <Route path="/servants" component={ServantsPage} />
-              <Route path="/ranks" component={RanksPage} />
-              <Route component={NoMatch} />
-            </Switch>
-          </DefaultLayout>
-          }
-          <Redirect to="/login" />
-        </Switch>
-      </Router>
+class App extends React.Component {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.user) {
+      this.props.addRankListener()
+      this.props.addServantListener()
+    } else {
+      detachRankListener()
+      detachServantListener()
     }
-  </div>
-)
+  }
 
-export default connect(state => state.auth)(App)
+  render () {
+    const { user, initializing } = this.props
+    return (
+      <div id="root">
+        { initializing
+          ? <Loading />
+          : <Router>
+            <Switch>
+              <Redirect from="/" exact to="/login" />
+              <Route path="/login" component={LoginPage} />
+              { user &&
+              <DefaultLayout>
+                <Switch>
+                  <Route path="/servants" component={ServantsPage} />
+                  <Route path="/ranks" component={RanksPage} />
+                  <Route component={NoMatch} />
+                </Switch>
+              </DefaultLayout>
+              }
+              <Redirect to="/login" />
+            </Switch>
+          </Router>
+        }
+      </div>
+    )
+  }
+}
+
+export default connect(state => state.auth, {
+  addRankListener,
+  addServantListener,
+})(App)

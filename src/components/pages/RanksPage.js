@@ -19,7 +19,6 @@ import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
 import BaseDialog from '../dialogs/BaseDialog'
 import {
-  addRankListener,
   saveRank,
   deleteRank,
 } from '../../reducers/ranks/actions'
@@ -50,11 +49,6 @@ class RanksPage extends React.Component {
   state ={
     confirmOpen: false,
     currentRankKey: null,
-  }
-
-  constructor (props) {
-    super(props)
-    this.props.addRankListener()
   }
 
   newRank = () => {
@@ -146,7 +140,5 @@ class RanksPage extends React.Component {
 
 export default compose(
   withStyles(styles),
-  connect(state => state.ranks, {
-    addRankListener,
-  }),
+  connect(state => state.ranks),
 )(RanksPage)

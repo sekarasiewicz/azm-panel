@@ -8,6 +8,7 @@ class ServantDialog extends React.Component {
   state = {
     name: '',
     nick: '',
+    city: '',
     status: true,
     year: '',
     from: '',
@@ -28,7 +29,6 @@ class ServantDialog extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     const { open, handleClose, handleConfirm } = this.props
     return (
       <BaseDialog
@@ -50,11 +50,35 @@ class ServantDialog extends React.Component {
             onChange={this.handleChange('nick')}
             value={this.state.nick}
           />
+          <TextInput
+            id="city"
+            label="City"
+            onChange={this.handleChange('city')}
+            value={this.state.city}
+          />
           <CheckboxInput
             label="Status"
             onChange={this.handleCheckChange('status')}
             value="status"
             checked={this.state.status}
+          />
+          <TextInput
+            id="year"
+            label="Year"
+            onChange={this.handleChange('year')}
+            value={this.state.year}
+          />
+          <TextInput
+            id="from"
+            label="In Clan From"
+            onChange={this.handleChange('from')}
+            value={this.state.from}
+          />
+          <TextInput
+            id="battleTag"
+            label="Battle Tag"
+            onChange={this.handleChange('battleTag')}
+            value={this.state.battleTag}
           />
         </div>}
       />

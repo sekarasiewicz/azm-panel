@@ -41,7 +41,7 @@ const ServantsList = ({classes, servants, removeServant}) => (
           </ListItemAvatar>
           <ListItemText
             primary={servants[key].nick}
-            secondary={key}
+            secondary={servants[key].name}
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete"

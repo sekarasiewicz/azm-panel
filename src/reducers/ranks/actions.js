@@ -20,3 +20,7 @@ export const addRankListener = () => {
     })
   }
 }
+
+export const detachRankListener = () => {
+  rankRef.off()
+}

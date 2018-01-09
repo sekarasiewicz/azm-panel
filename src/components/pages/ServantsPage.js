@@ -9,7 +9,6 @@ import AddIcon from 'material-ui-icons/Add'
 import BaseDialog from '../dialogs/BaseDialog'
 import ServantDialog from '../dialogs/ServantDialog'
 import {
-  addServantListener,
   saveServant,
   deleteServant,
 } from '../../reducers/servants/actions'
@@ -30,21 +29,17 @@ const styles = theme => ({
 })
 
 class ServantsPage extends React.Component {
-  state ={
+  state = {
     confirmOpen: false,
     servantOpen: false,
     currentServantKey: null,
   }
 
-  constructor (props) {
-    super(props)
-    this.props.addServantListener()
-  }
-
   handleServantDialogConfirm = (servant) => () => {
-    console.log(servant)
-    this.setState({
-      servantOpen: true,
+    saveServant(null, servant).then(() => {
+      this.setState({
+        servantOpen: false,
+      })
     })
   }
 
@@ -117,11 +112,10 @@ class ServantsPage extends React.Component {
 ServantsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   servants: PropTypes.object,
+  ranks: PropTypes.object,
 }
 
 export default compose(
   withStyles(styles),
-  connect(state => state.servants, {
-    addServantListener,
-  }),
+  connect(state => state.servants),
 )(ServantsPage)

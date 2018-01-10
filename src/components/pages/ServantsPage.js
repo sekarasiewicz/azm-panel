@@ -66,7 +66,8 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants } = this.props
+    const { classes, servants, ranks } = this.props
+    console.log('ranks', ranks)
     return (<Grid
       container
       direction="row"
@@ -104,6 +105,7 @@ class ServantsPage extends React.Component {
         open={this.state.servantOpen}
         handleClose={this.handleServantDialogClose}
         handleConfirm={this.handleServantDialogConfirm}
+        ranks={ranks}
       />
     </Grid>)
   }
@@ -118,4 +120,5 @@ ServantsPage.propTypes = {
 export default compose(
   withStyles(styles),
   connect(state => state.servants),
+  connect(state => state.ranks),
 )(ServantsPage)

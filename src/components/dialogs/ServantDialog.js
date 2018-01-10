@@ -3,6 +3,7 @@ import BaseDialog from './BaseDialog'
 import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 import CheckboxInput from '../inputs/CheckboxInput'
+import SelectInput from '../inputs/SelectInput'
 
 class ServantDialog extends React.Component {
   state = {
@@ -29,7 +30,7 @@ class ServantDialog extends React.Component {
   }
 
   render () {
-    const { open, handleClose, handleConfirm } = this.props
+    const { open, handleClose, handleConfirm, ranks } = this.props
     return (
       <BaseDialog
         title="Add/Edit Servant"
@@ -80,6 +81,12 @@ class ServantDialog extends React.Component {
             onChange={this.handleChange('battleTag')}
             value={this.state.battleTag}
           />
+          <SelectInput
+            id="rank"
+            label="Rank"
+            options={ranks}
+            onChange={this.handleChange('rank')}
+          />
         </div>}
       />
     )
@@ -90,6 +97,7 @@ ServantDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  ranks: PropTypes.object,
 }
 
 export default ServantDialog

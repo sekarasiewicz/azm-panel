@@ -6,7 +6,11 @@ export const ranksChange = (ranks) => ({type: RANK_CHANGE, payload: ranks})
 const rankRef = firebase.database().ref('ranks/')
 
 export const saveRank = (key, rank) => {
-  rankRef.child(key).set(rank)
+  if (key) {
+    rankRef.child(key).set(rank)
+  } else {
+    rankRef.push().set(rank)
+  }
 }
 
 export const deleteRank = (key) => {

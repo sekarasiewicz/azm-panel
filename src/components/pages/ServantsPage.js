@@ -69,7 +69,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants } = this.props
+    const { classes, servants, ranks } = this.props
     return (<Grid
       container
       direction="row"
@@ -86,6 +86,7 @@ class ServantsPage extends React.Component {
         <ServantsList
           removeServant={this.removeServant}
           servants={servants}
+          ranks={ranks}
         />
       </Grid>
       <Button
@@ -107,6 +108,7 @@ class ServantsPage extends React.Component {
         open={this.state.servantOpen}
         handleClose={this.handleServantDialogClose}
         handleConfirm={this.handleServantDialogConfirm}
+        ranks={ranks}
       />
     </Grid>)
   }
@@ -117,8 +119,9 @@ ServantsPage.propTypes = {
   servants: PropTypes.object,
   ranks: PropTypes.object,
 }
-
+// TODO Simplify it move to one place servants and ranks!
 export default compose(
   withStyles(styles),
   connect(state => state.servants),
+  connect(state => state.ranks),
 )(ServantsPage)

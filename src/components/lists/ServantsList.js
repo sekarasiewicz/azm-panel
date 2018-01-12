@@ -25,11 +25,12 @@ const styles = theme => ({
   },
 })
 // TODO itarate by servantRanks and fill data from servants
-const ServantsList = ({classes, servants, removeServant}) => (
+const ServantsList = ({classes, servants, ranks, removeServant}) => (
   <Paper>
     <Typography
       type="headline"
       className={classes.panelHeader}>
+      Servants
     </Typography>
     <List dense={false}>
       {servants && Object.keys(servants).map(key => (
@@ -41,7 +42,7 @@ const ServantsList = ({classes, servants, removeServant}) => (
           </ListItemAvatar>
           <ListItemText
             primary={servants[key].nick}
-            secondary={servants[key].name}
+            secondary={`Rank: ${ranks[servants[key].rank].name}, Name: ${servants[key].name}`}
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete"
@@ -60,6 +61,7 @@ ServantsList.propTypes = {
   classes: PropTypes.object.isRequired,
   removeServant: PropTypes.func.isRequired,
   servants: PropTypes.object,
+  ranks: PropTypes.object,
 }
 
 export default withStyles(styles)(ServantsList)

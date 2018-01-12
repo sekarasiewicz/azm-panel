@@ -1,6 +1,5 @@
 import React from 'react'
 import BaseDialog from './BaseDialog'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 import CheckboxInput from '../inputs/CheckboxInput'
@@ -100,4 +99,4 @@ ServantDialog.propTypes = {
   ranks: PropTypes.object,
 }
 
-export default connect(state => state.ranks)(ServantDialog)
+export default ServantDialog

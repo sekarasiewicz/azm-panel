@@ -5,23 +5,13 @@ import compose from 'recompose/compose'
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
-import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
-import List, {
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-} from 'material-ui/List'
-import Avatar from 'material-ui/Avatar'
-import IconButton from 'material-ui/IconButton'
-import FolderIcon from 'material-ui-icons/Folder'
-import DeleteIcon from 'material-ui-icons/Delete'
 import BaseDialog from '../dialogs/BaseDialog'
+import RanksList from '../lists/RanksList'
 import {
   saveRank,
   deleteRank,
 } from '../../reducers/ranks/actions'
+import RankDialog from '../dialogs/RankDialog'
 
 const styles = theme => ({
   root: {
@@ -48,17 +38,26 @@ const styles = theme => ({
 class RanksPage extends React.Component {
   state ={
     confirmOpen: false,
+    rankOpen: false,
     currentRankKey: null,
   }
 
+  handleRankDialogConfirm = (servant) => () => {
+    saveRank(servant).then(() => {
+      this.setState({
+        rankOpen: false,
+      })
+    })
+  }
+
   newRank = () => {
-    saveRank('Servant', {
-      display: 'Something',
-      level: 100,
+    this.setState({
+      rankOpen: true,
     })
   }
 
   handleAlertDialogClose = () => this.setState({confirmOpen: false})
+  handleRankDialogClose = () => this.setState({rankOpen: false})
 
   handleAlertDialogConfirm = () => {
     this.setState({
@@ -75,8 +74,6 @@ class RanksPage extends React.Component {
 
   render () {
     const { classes, ranks } = this.props
-    const rankObjKeys = ranks && Object.keys(ranks)
-    // TODO add level!
     return (<Grid
       container
       direction="row"
@@ -90,35 +87,10 @@ class RanksPage extends React.Component {
         xs={12}
         sm={10}
       >
-        <Paper>
-          <Typography
-            type="headline"
-            className={classes.panelHeader}>
-            Ranks
-          </Typography>
-          <div>
-            <List dense={false}>
-              {rankObjKeys && rankObjKeys.map(key => (
-                <ListItem button key={key}>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={ranks[key].display}
-                    secondary={key}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete" onClick={this.removeRank(key)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Paper>
+        <RanksList
+          removeRank={this.removeRank}
+          ranks={ranks}
+        />
       </Grid>
       <Button
         fab color="primary"
@@ -134,6 +106,11 @@ class RanksPage extends React.Component {
         open={this.state.confirmOpen}
         handleClose={this.handleAlertDialogClose}
         handleConfirm={this.handleAlertDialogConfirm}
+      />
+      <RankDialog
+        open={this.state.rankOpen}
+        handleClose={this.handleRankDialogClose}
+        handleConfirm={this.handleRankDialogConfirm}
       />
     </Grid>)
   }

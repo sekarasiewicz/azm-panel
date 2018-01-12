@@ -1,5 +1,6 @@
 import React from 'react'
 import BaseDialog from './BaseDialog'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 import CheckboxInput from '../inputs/CheckboxInput'
@@ -15,9 +16,6 @@ class ServantDialog extends React.Component {
     from: '',
     battleTag: '',
     rank: '',
-    ranks: {
-      founders: true,
-    },
   }
 
   handleChange = prop => event => {
@@ -31,6 +29,7 @@ class ServantDialog extends React.Component {
 
   render () {
     const { open, handleClose, handleConfirm, ranks } = this.props
+
     return (
       <BaseDialog
         title="Add/Edit Servant"
@@ -85,6 +84,7 @@ class ServantDialog extends React.Component {
             id="rank"
             label="Rank"
             options={ranks}
+            value={this.state.rank}
             onChange={this.handleChange('rank')}
           />
         </div>}
@@ -100,4 +100,4 @@ ServantDialog.propTypes = {
   ranks: PropTypes.object,
 }
 
-export default ServantDialog
+export default connect(state => state.ranks)(ServantDialog)

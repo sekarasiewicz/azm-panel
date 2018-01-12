@@ -3,28 +3,36 @@ import { SERVANT_CHANGE } from './constants'
 
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
 
-const servantRef = firebase.database().ref('servants/')
+const servantsRef = firebase.database().ref('servants/')
+const servantRanksRef = firebase.database().ref('servantRanks/')
 
-export const saveServant = (key, servant) => {
-  if (key) {
-    return servantRef.child(key).set(servant)
-  } else {
-    return servantRef.push().set(servant)
+export const saveServant = (servant) => {
+  const servantKey = servantsRef.push().key
+
+  let updates = {}
+  updates['/servants/' + servantKey] = servant
+  if (servant.rank) {
+    updates['/servantRanks/' + servant.rank + '/' + servantKey] = true
   }
+
+  return firebase.database().ref().update(updates)
 }
 
-export const deleteServant = (key) => {
-  servantRef.child(key).remove()
+export const deleteServant = (key, rank) => {
+  servantsRef.child(key).remove()
+  if (rank) {
+    servantRanksRef.child(rank).child(key).remove()
+  }
 }
 
 export const addServantListener = () => {
   return (dispatch) => {
-    servantRef.on('value', (snapshot) => {
+    servantsRef.on('value', (snapshot) => {
       dispatch(servantsChange(snapshot.val()))
     })
   }
 }
 
 export const detachServantListener = () => {
-  servantRef.off()
+  servantsRef.off()
 }

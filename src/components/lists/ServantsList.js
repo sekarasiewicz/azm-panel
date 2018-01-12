@@ -24,7 +24,7 @@ const styles = theme => ({
     height: 50,
   },
 })
-
+// TODO itarate by servantRanks and fill data from servants
 const ServantsList = ({classes, servants, removeServant}) => (
   <Paper>
     <Typography

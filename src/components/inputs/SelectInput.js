@@ -23,7 +23,8 @@ const TextInput = ({ id, name, label, options, value, onChange, classes }) => (
       <MenuItem value="">
         <em>None</em>
       </MenuItem>
-      { options && options.map((key) => <MenuItem value={key}>{options[key].display}</MenuItem>)}
+      { options && Object.keys(options).map((key) =>
+        <MenuItem key={key} value={key}>{options[key].display}</MenuItem>)}
     </Select>
   </FormControl>
 )

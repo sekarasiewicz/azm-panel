@@ -76,6 +76,7 @@ class RanksPage extends React.Component {
   render () {
     const { classes, ranks } = this.props
     const rankObjKeys = ranks && Object.keys(ranks)
+    // TODO add level!
     return (<Grid
       container
       direction="row"

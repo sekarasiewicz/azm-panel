@@ -36,7 +36,7 @@ class ServantsPage extends React.Component {
   }
 
   handleServantDialogConfirm = (servant) => () => {
-    saveServant(null, servant).then(() => {
+    saveServant(servant).then(() => {
       this.setState({
         servantOpen: false,
       })
@@ -55,7 +55,10 @@ class ServantsPage extends React.Component {
   handleAlertDialogConfirm = () => {
     this.setState({
       confirmOpen: false,
-    }, () => deleteServant(this.state.currentServantKey))
+    }, () => deleteServant(
+      this.state.currentServantKey,
+      this.props.servants[this.state.currentServantKey].rank
+    ))
   }
 
   removeServant = key => () => {
@@ -66,8 +69,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants, ranks } = this.props
-    console.log('ranks', ranks)
+    const { classes, servants } = this.props
     return (<Grid
       container
       direction="row"
@@ -105,7 +107,6 @@ class ServantsPage extends React.Component {
         open={this.state.servantOpen}
         handleClose={this.handleServantDialogClose}
         handleConfirm={this.handleServantDialogConfirm}
-        ranks={ranks}
       />
     </Grid>)
   }
@@ -120,5 +121,4 @@ ServantsPage.propTypes = {
 export default compose(
   withStyles(styles),
   connect(state => state.servants),
-  connect(state => state.ranks),
 )(ServantsPage)

@@ -37,9 +37,9 @@ class ServantsPage extends React.Component {
 
   handleServantDialogConfirm = (servant) => () => {
     saveServant(servant).then(() => {
-      this.setState({
-        servantOpen: false,
-      })
+      // this.setState({
+      //   servantOpen: false,
+      // })
     })
   }
 
@@ -119,7 +119,6 @@ ServantsPage.propTypes = {
   servants: PropTypes.object,
   ranks: PropTypes.object,
 }
-// TODO Simplify it move to one place servants and ranks!
 export default compose(
   withStyles(styles),
   connect(state => state.servants),

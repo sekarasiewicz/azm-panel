@@ -1,5 +1,5 @@
 import { SET_USER, AUTH_ERROR, INITIALIZING } from './constants'
-import firebase from '../../lib/firebaseService'
+import { fbService } from '../../lib/firebaseService'
 
 export function setUser (payload) {
   return {
@@ -24,7 +24,7 @@ export function initializing (payload) {
 
 export function login (data) {
   return dispatch => {
-    firebase.auth().signInWithEmailAndPassword(data.email, data.password)
+    fbService.auth().signInWithEmailAndPassword(data.email, data.password)
       .catch(error => {
         dispatch(authError(error))
       })
@@ -32,14 +32,13 @@ export function login (data) {
 }
 
 export function logout () {
-  firebase.auth().signOut()
+  fbService.auth().signOut()
 }
 
 export function initializeApp (redirectTo) {
   return dispatch => {
-    // TODO Think about this redirect to pack it in one action
     dispatch(initializing({ redirectTo: redirectTo }))
-    firebase.auth().onAuthStateChanged((user) => {
+    fbService.auth().onAuthStateChanged((user) => {
       dispatch(setUser(user))
     })
   }
@@ -47,7 +46,7 @@ export function initializeApp (redirectTo) {
 
 // Probably unnecessary
 export function updateUser (userObj) {
-  const user = firebase.auth().currentUser
+  const user = fbService.auth().currentUser
   user.updateProfile({
     displayName: userObj.displayName,
     photoURL: userObj.photoURL,

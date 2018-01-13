@@ -1,10 +1,7 @@
-import firebase from '../../lib/firebaseService'
+import { servantRanksRef, servantsRef, fbService } from '../../lib/firebaseService'
 import { SERVANT_CHANGE } from './constants'
 
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
-
-const servantsRef = firebase.database().ref('servants/')
-const servantRanksRef = firebase.database().ref('servantRanks/')
 
 export const saveServant = (servant) => {
   const servantKey = servantsRef.push().key
@@ -15,7 +12,7 @@ export const saveServant = (servant) => {
     updates['/servantRanks/' + servant.rank + '/' + servantKey] = true
   }
 
-  return firebase.database().ref().update(updates)
+  return fbService.database().ref().update(updates)
 }
 
 export const deleteServant = (key, rank) => {

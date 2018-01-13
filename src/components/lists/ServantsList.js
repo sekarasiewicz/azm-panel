@@ -25,37 +25,54 @@ const styles = theme => ({
   },
 })
 // TODO itarate by servantRanks and fill data from servants
-const ServantsList = ({classes, servants, ranks, removeServant}) => (
-  <Paper>
-    <Typography
-      type="headline"
-      className={classes.panelHeader}>
-      Servants
-    </Typography>
-    <List dense={false}>
-      {servants && Object.keys(servants).map(key => (
-        <ListItem button key={key}>
-          <ListItemAvatar>
-            <Avatar>
-              <FolderIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={servants[key].nick}
-            secondary={`Rank: ${ranks[servants[key].rank].name}, Name: ${servants[key].name}`}
-          />
-          <ListItemSecondaryAction>
-            <IconButton aria-label="Delete"
-              onClick={removeServant(key)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
-  </Paper>
-)
+// DIsable button on add!
+class ServantsList extends React.Component {
+  getSecondary = (servant) => {
+    if (servant) {
+      let text = []
+      if (servant.rank) {
+        text.push(`Rank: ${this.props.ranks[servant.rank].name}`)
+      }
+      text.push(`Name: ${servant.name}`)
+      return text.join(', ')
+    }
+    return ''
+  }
+  render () {
+    const {classes, servants, removeServant} = this.props
+    return (
+      <Paper>
+        <Typography
+          type="headline"
+          className={classes.panelHeader}>
+          Servants
+        </Typography>
+        <List dense={false}>
+          {servants && Object.keys(servants).map(key => (
+            <ListItem button key={key}>
+              <ListItemAvatar>
+                <Avatar>
+                  <FolderIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={servants[key].nick}
+                secondary={this.getSecondary(servants[key])}
+              />
+              <ListItemSecondaryAction>
+                <IconButton aria-label="Delete"
+                  onClick={removeServant(key)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+    )
+  }
+}
 
 ServantsList.propTypes = {
   classes: PropTypes.object.isRequired,

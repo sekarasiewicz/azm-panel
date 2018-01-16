@@ -25,7 +25,7 @@ const styles = theme => ({
   },
 })
 
-const RanksList = ({classes, ranks, removeRank}) => (
+const RanksList = ({classes, ranks, updateRank, removeRank}) => (
   <Paper>
     <Typography
       type="headline"
@@ -34,7 +34,7 @@ const RanksList = ({classes, ranks, removeRank}) => (
     </Typography>
     <List dense={false}>
       {ranks && Object.keys(ranks).map(key => (
-        <ListItem button key={key}>
+        <ListItem button key={key} onClick={updateRank(key)}>
           <ListItemAvatar>
             <Avatar>
               <FolderIcon />
@@ -42,7 +42,7 @@ const RanksList = ({classes, ranks, removeRank}) => (
           </ListItemAvatar>
           <ListItemText
             primary={ranks[key].name}
-            secondary={'level' + ranks[key].level}
+            secondary={'level: ' + ranks[key].level}
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete"
@@ -59,6 +59,7 @@ const RanksList = ({classes, ranks, removeRank}) => (
 
 RanksList.propTypes = {
   classes: PropTypes.object.isRequired,
+  updateRank: PropTypes.func.isRequired,
   removeRank: PropTypes.func.isRequired,
   ranks: PropTypes.object,
 }

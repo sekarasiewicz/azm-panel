@@ -4,7 +4,6 @@ import { SERVANT_CHANGE } from './constants'
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
 
 export const saveServant = (servant, key) => {
-  console.log('kye', key)
   let updates = {}
   updates['/servants/' + key] = servant
   if (servant.rank) {

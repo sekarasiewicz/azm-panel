@@ -45,7 +45,6 @@ class ServantsPage extends React.Component {
   }
 
   handleServantDialogConfirmUpdate = (servant) => () => {
-    console.log("this.state.currentServantKey", this.state.currentServantKey)
     updateServant(
       servant,
       this.state.currentServantKey,
@@ -140,7 +139,7 @@ class ServantsPage extends React.Component {
           handleClose={this.handleServantDialogClose}
           handleConfirm={this.getServantConfirmFunc()}
           ranks={ranks}
-          servant={servants[this.state.currentServantKey]}
+          servant={servants && servants[this.state.currentServantKey]}
         />
       }
     </Grid>)

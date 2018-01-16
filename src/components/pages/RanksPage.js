@@ -8,7 +8,8 @@ import AddIcon from 'material-ui-icons/Add'
 import BaseDialog from '../dialogs/BaseDialog'
 import RanksList from '../lists/RanksList'
 import {
-  saveRank,
+  addRank,
+  updateRank,
   deleteRank,
 } from '../../reducers/ranks/actions'
 import RankDialog from '../dialogs/RankDialog'
@@ -36,18 +37,29 @@ const styles = theme => ({
 })
 
 class RanksPage extends React.Component {
-  state ={
+  state = {
     confirmOpen: false,
     rankOpen: false,
     currentRankKey: null,
   }
 
-  handleRankDialogConfirm = (servant) => () => {
-    saveRank(servant).then(() => {
+  handleRankDialogConfirmAdd = (servant) => () => {
+    addRank(servant).then(() => {
       this.setState({
         rankOpen: false,
       })
     })
+  }
+
+  handleRankDialogConfirmUpdate = (rank) => () => {
+    updateRank(rank, this.state.currentRankKey).then(() => this.setState({ rankOpen: false }))
+  }
+
+  getRankConfirmFunc = () => {
+    if (this.state.currentRankKey) {
+      return this.handleRankDialogConfirmUpdate
+    }
+    return this.handleRankDialogConfirmAdd
   }
 
   newRank = () => {
@@ -57,7 +69,7 @@ class RanksPage extends React.Component {
   }
 
   handleAlertDialogClose = () => this.setState({confirmOpen: false})
-  handleRankDialogClose = () => this.setState({rankOpen: false})
+  handleRankDialogClose = () => this.setState({rankOpen: false, currentRankKey: null})
 
   handleAlertDialogConfirm = () => {
     this.setState({
@@ -65,9 +77,16 @@ class RanksPage extends React.Component {
     }, () => deleteRank(this.state.currentRankKey))
   }
 
-  removeRank = key => () => {
+  removeRankDialog = key => () => {
     this.setState({
       confirmOpen: true,
+      currentRankKey: key,
+    })
+  }
+
+  updateRankDialog = key => () => {
+    this.setState({
+      rankOpen: true,
       currentRankKey: key,
     })
   }
@@ -88,7 +107,8 @@ class RanksPage extends React.Component {
         sm={10}
       >
         <RanksList
-          removeRank={this.removeRank}
+          removeRank={this.removeRankDialog}
+          updateRank={this.updateRankDialog}
           ranks={ranks}
         />
       </Grid>
@@ -100,6 +120,7 @@ class RanksPage extends React.Component {
       >
         <AddIcon />
       </Button>
+      {this.state.confirmOpen &&
       <BaseDialog
         title="Confirm: Delete Rank"
         desc="Do you really want to delete Rank? It will leave Servants With This Rank Without Rank!"
@@ -107,11 +128,15 @@ class RanksPage extends React.Component {
         handleClose={this.handleAlertDialogClose}
         handleConfirm={this.handleAlertDialogConfirm}
       />
+      }
+      {this.state.rankOpen &&
       <RankDialog
         open={this.state.rankOpen}
         handleClose={this.handleRankDialogClose}
-        handleConfirm={this.handleRankDialogConfirm}
+        handleConfirm={this.getRankConfirmFunc()}
+        rank={ranks[this.state.currentRankKey]}
       />
+      }
     </Grid>)
   }
 }

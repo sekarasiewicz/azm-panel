@@ -4,13 +4,27 @@ import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 
 class RankDialog extends React.Component {
-  state = {
-    name: '',
-    level: '',
+  constructor (props) {
+    super(props)
+    if (props.rank) {
+      this.state = {...props.rank}
+    } else {
+      this.state = {
+        name: '',
+        level: '',
+      }
+    }
   }
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value })
+  }
+
+  getTitle = () => {
+    if (this.props.rank) {
+      return 'Edit Rank'
+    }
+    return 'Add Rank'
   }
 
   render () {
@@ -18,8 +32,7 @@ class RankDialog extends React.Component {
 
     return (
       <BaseDialog
-        title="Add/Edit Rank"
-        desc="For now no Description"
+        title={this.getTitle()}
         open={open}
         handleClose={handleClose}
         handleConfirm={handleConfirm(this.state)}
@@ -46,6 +59,7 @@ RankDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  rank: PropTypes.object,
 }
 
 export default RankDialog

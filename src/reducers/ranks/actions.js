@@ -3,8 +3,12 @@ import { RANK_CHANGE } from './constants'
 
 export const ranksChange = (ranks) => ({type: RANK_CHANGE, payload: ranks})
 
-export const saveRank = (rank) => {
+export const addRank = (rank) => {
   return rankRef.push().set(rank)
+}
+
+export const updateRank = (rank, key) => {
+  return rankRef.child(key).set(rank)
 }
 
 export const deleteRank = (key) => {

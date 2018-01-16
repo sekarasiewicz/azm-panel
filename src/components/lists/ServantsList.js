@@ -39,7 +39,7 @@ class ServantsList extends React.Component {
   }
 
   render () {
-    const { classes, servants, removeServant, updateServant } = this.props
+    const { classes, servants, updateServant, removeServant } = this.props
     return (
       <Paper>
         <Typography
@@ -76,8 +76,8 @@ class ServantsList extends React.Component {
 
 ServantsList.propTypes = {
   classes: PropTypes.object.isRequired,
-  removeServant: PropTypes.func.isRequired,
   updateServant: PropTypes.func.isRequired,
+  removeServant: PropTypes.func.isRequired,
   servants: PropTypes.object,
   ranks: PropTypes.object,
 }

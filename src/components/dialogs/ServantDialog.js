@@ -6,15 +6,22 @@ import CheckboxInput from '../inputs/CheckboxInput'
 import SelectInput from '../inputs/SelectInput'
 
 class ServantDialog extends React.Component {
-  state = {
-    name: '',
-    nick: '',
-    city: '',
-    status: true,
-    year: '',
-    from: '',
-    battleTag: '',
-    rank: '',
+  constructor (props) {
+    super(props)
+    if (props.servant) {
+      this.state = {...props.servant}
+    } else {
+      this.state = {
+        name: '',
+        nick: '',
+        city: '',
+        status: true,
+        year: '',
+        from: '',
+        battleTag: '',
+        rank: '',
+      }
+    }
   }
 
   handleChange = prop => event => {
@@ -26,12 +33,19 @@ class ServantDialog extends React.Component {
     this.setState({ [name]: checked })
   }
 
+  getTitle = () => {
+    if (this.props.servant) {
+      return 'Edit Servant'
+    }
+    return 'Add Servant'
+  }
+
   render () {
     const { open, handleClose, handleConfirm, ranks } = this.props
 
     return (
       <BaseDialog
-        title="Add/Edit Servant"
+        title={this.getTitle()}
         desc="For now no Description"
         open={open}
         handleClose={handleClose}
@@ -97,6 +111,7 @@ ServantDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   ranks: PropTypes.object,
+  servant: PropTypes.object,
 }
 
 export default ServantDialog

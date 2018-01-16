@@ -25,7 +25,6 @@ const styles = theme => ({
   },
 })
 // TODO itarate by servantRanks and fill data from servants
-// DIsable button on add!
 class ServantsList extends React.Component {
   getSecondary = (servant) => {
     if (servant) {
@@ -38,8 +37,9 @@ class ServantsList extends React.Component {
     }
     return ''
   }
+
   render () {
-    const {classes, servants, removeServant} = this.props
+    const { classes, servants, removeServant, updateServant } = this.props
     return (
       <Paper>
         <Typography
@@ -49,7 +49,7 @@ class ServantsList extends React.Component {
         </Typography>
         <List dense={false}>
           {servants && Object.keys(servants).map(key => (
-            <ListItem button key={key}>
+            <ListItem button key={key} onClick={updateServant(key)}>
               <ListItemAvatar>
                 <Avatar>
                   <FolderIcon />
@@ -77,6 +77,7 @@ class ServantsList extends React.Component {
 ServantsList.propTypes = {
   classes: PropTypes.object.isRequired,
   removeServant: PropTypes.func.isRequired,
+  updateServant: PropTypes.func.isRequired,
   servants: PropTypes.object,
   ranks: PropTypes.object,
 }

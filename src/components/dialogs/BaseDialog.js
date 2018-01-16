@@ -13,21 +13,13 @@ class BaseDialog extends React.Component {
     disabled: false,
   }
 
-  componentWillReceiveProps (next) {
-    if (!next.open) {
-      this.setState({
-        disabled: false,
-      })
-    }
-  }
-
   handleConfirm = () => {
     this.setState({ disabled: true }, () => this.props.handleConfirm())
   }
+
   render () {
     const { open, handleClose, title, desc, child } = this.props
     const { disabled } = this.state
-    console.log('disabled')
     return (
       <div>
         <Dialog

@@ -9,7 +9,8 @@ import AddIcon from 'material-ui-icons/Add'
 import BaseDialog from '../dialogs/BaseDialog'
 import ServantDialog from '../dialogs/ServantDialog'
 import {
-  saveServant,
+  addServant,
+  updateServant,
   deleteServant,
 } from '../../reducers/servants/actions'
 import ServantsList from '../lists/ServantsList'
@@ -35,12 +36,31 @@ class ServantsPage extends React.Component {
     currentServantKey: null,
   }
 
-  handleServantDialogConfirm = (servant) => () => {
-    saveServant(servant).then(() => {
-      // this.setState({
-      //   servantOpen: false,
-      // })
+  handleServantDialogConfirmAdd = (servant) => () => {
+    addServant(servant).then(() => {
+      this.setState({
+        servantOpen: false,
+      })
     })
+  }
+
+  handleServantDialogConfirmUpdate = (servant) => () => {
+    console.log("this.state.currentServantKey", this.state.currentServantKey)
+    updateServant(
+      servant,
+      this.state.currentServantKey,
+      this.props.servants[this.state.currentServantKey].rank).then(() => {
+      this.setState({
+        servantOpen: false,
+      })
+    })
+  }
+
+  getServantConfirmFunc = () => {
+    if (this.state.currentServantKey) {
+      return this.handleServantDialogConfirmUpdate
+    }
+    return this.handleServantDialogConfirmAdd
   }
 
   newServant = () => {
@@ -50,7 +70,7 @@ class ServantsPage extends React.Component {
   }
 
   handleAlertDialogClose = () => this.setState({confirmOpen: false})
-  handleServantDialogClose = () => this.setState({servantOpen: false})
+  handleServantDialogClose = () => this.setState({servantOpen: false, currentServantKey: null})
 
   handleAlertDialogConfirm = () => {
     this.setState({
@@ -61,9 +81,16 @@ class ServantsPage extends React.Component {
     ))
   }
 
-  removeServant = key => () => {
+  removeServantDialog = key => () => {
     this.setState({
       confirmOpen: true,
+      currentServantKey: key,
+    })
+  }
+
+  updateServantDialog = key => () => {
+    this.setState({
+      servantOpen: true,
       currentServantKey: key,
     })
   }
@@ -84,7 +111,8 @@ class ServantsPage extends React.Component {
         sm={10}
       >
         <ServantsList
-          removeServant={this.removeServant}
+          removeServant={this.removeServantDialog}
+          updateServant={this.updateServantDialog}
           servants={servants}
           ranks={ranks}
         />
@@ -97,19 +125,24 @@ class ServantsPage extends React.Component {
       >
         <AddIcon />
       </Button>
-      <BaseDialog
-        title="Confirm: Delete Servant"
-        desc="Do you really want to delete Servant?"
-        open={this.state.confirmOpen}
-        handleClose={this.handleAlertDialogClose}
-        handleConfirm={this.handleAlertDialogConfirm}
-      />
-      <ServantDialog
-        open={this.state.servantOpen}
-        handleClose={this.handleServantDialogClose}
-        handleConfirm={this.handleServantDialogConfirm}
-        ranks={ranks}
-      />
+      {this.state.confirmOpen &&
+        <BaseDialog
+          title="Confirm: Delete Servant"
+          desc="Do you really want to delete Servant?"
+          open={this.state.confirmOpen}
+          handleClose={this.handleAlertDialogClose}
+          handleConfirm={this.handleAlertDialogConfirm}
+        />
+      }
+      {this.state.servantOpen &&
+        <ServantDialog
+          open={this.state.servantOpen}
+          handleClose={this.handleServantDialogClose}
+          handleConfirm={this.getServantConfirmFunc()}
+          ranks={ranks}
+          servant={servants[this.state.currentServantKey]}
+        />
+      }
     </Grid>)
   }
 }

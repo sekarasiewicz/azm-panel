@@ -95,7 +95,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants, ranks } = this.props
+    const { classes, servants, ranks, servantRanks } = this.props
     return (<Grid
       container
       direction="row"
@@ -114,6 +114,7 @@ class ServantsPage extends React.Component {
           updateServant={this.updateServantDialog}
           servants={servants}
           ranks={ranks}
+          servantRanks={servantRanks}
         />
       </Grid>
       <Button
@@ -149,6 +150,7 @@ class ServantsPage extends React.Component {
 ServantsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   servants: PropTypes.object,
+  servantRanks: PropTypes.object,
   ranks: PropTypes.object,
 }
 export default compose(

@@ -1,7 +1,9 @@
 import { servantRanksRef, servantsRef, fbService } from '../../lib/firebaseService'
-import { SERVANT_CHANGE } from './constants'
+import { SERVANT_CHANGE, SERVANT_RANK_CHANGE } from './constants'
 
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
+export const servantRanksChange = (servantRanks) => (
+  {type: SERVANT_RANK_CHANGE, payload: servantRanks})
 
 export const saveServant = (servant, key) => {
   let updates = {}
@@ -37,6 +39,18 @@ export const addServantListener = () => {
   }
 }
 
+export const addServantRankListener = () => {
+  return (dispatch) => {
+    servantRanksRef.on('value', (snapshot) => {
+      dispatch(servantRanksChange(snapshot.val()))
+    })
+  }
+}
+
 export const detachServantListener = () => {
   servantsRef.off()
+}
+
+export const detachServantRankListener = () => {
+  servantRanksRef.off()
 }

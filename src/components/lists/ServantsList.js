@@ -39,7 +39,7 @@ class ServantsList extends React.Component {
   }
 
   render () {
-    const { classes, servants, updateServant, removeServant } = this.props
+    const { classes, servants, ranks, servantRanks, updateServant, removeServant } = this.props
     return (
       <Paper>
         <Typography
@@ -47,28 +47,34 @@ class ServantsList extends React.Component {
           className={classes.panelHeader}>
           Servants
         </Typography>
-        <List dense={false}>
-          {servants && Object.keys(servants).map(key => (
-            <ListItem button key={key} onClick={updateServant(key)}>
-              <ListItemAvatar>
-                <Avatar>
-                  <FolderIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={servants[key].nick}
-                secondary={this.getSecondary(servants[key])}
-              />
-              <ListItemSecondaryAction>
-                <IconButton aria-label="Delete"
-                  onClick={removeServant(key)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
+        { ranks && Object.keys(ranks).map(rankKey => (
+          servantRanks && servantRanks[rankKey] &&
+          <div key={rankKey}>
+            <h2>{ ranks[rankKey].name }</h2>
+            <List dense={false}>
+              { Object.keys(servantRanks[rankKey]).map(key => (
+                <ListItem button key={key} onClick={updateServant(key)}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={servants[key].nick}
+                    secondary={this.getSecondary(servants[key])}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Delete"
+                      onClick={removeServant(key)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        ))}
       </Paper>
     )
   }
@@ -80,6 +86,7 @@ ServantsList.propTypes = {
   removeServant: PropTypes.func.isRequired,
   servants: PropTypes.object,
   ranks: PropTypes.object,
+  servantRanks: PropTypes.object,
 }
 
 export default withStyles(styles)(ServantsList)

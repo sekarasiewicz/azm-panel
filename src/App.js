@@ -13,7 +13,11 @@ import Loading from './components/Loading'
 import NoMatch from './components/NoMatch'
 import { connect } from 'react-redux'
 import { addRankListener, detachRankListener } from './reducers/ranks/actions'
-import { addServantListener, detachServantListener } from './reducers/servants/actions'
+import {
+  addServantListener,
+  addServantRankListener,
+  detachServantRankListener,
+  detachServantListener } from './reducers/servants/actions'
 import './App.css'
 
 class App extends React.Component {
@@ -21,9 +25,11 @@ class App extends React.Component {
     if (nextProps.user) {
       this.props.addRankListener()
       this.props.addServantListener()
+      this.props.addServantRankListener()
     } else {
       detachRankListener()
       detachServantListener()
+      detachServantRankListener()
     }
   }
 
@@ -58,4 +64,5 @@ class App extends React.Component {
 export default connect(state => state.auth, {
   addRankListener,
   addServantListener,
+  addServantRankListener,
 })(App)

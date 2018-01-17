@@ -25,10 +25,11 @@ export const updateServant = (servant, key, oldRank) => {
 }
 
 export const deleteServant = (key, rank) => {
-  servantsRef.child(key).remove()
+  const toRemove = [servantsRef.child(key).remove()]
   if (rank) {
-    servantRanksRef.child(rank).child(key).remove()
+    toRemove.push(servantRanksRef.child(rank).child(key).remove())
   }
+  return Promise.all(toRemove)
 }
 
 export const addServantListener = () => {

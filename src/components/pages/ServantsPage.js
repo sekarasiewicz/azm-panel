@@ -72,14 +72,10 @@ class ServantsPage extends React.Component {
   handleServantDialogClose = () => this.setState({servantOpen: false, currentServantKey: null})
 
   handleAlertDialogConfirm = () => {
-    const currentServantKey = this.state.currentServantKey
-    this.setState({
-      confirmOpen: false,
-      currentServantKey: null,
-    }, () => deleteServant(
-      currentServantKey,
-      this.props.servants[currentServantKey].rank
-    ))
+    deleteServant(
+      this.state.currentServantKey,
+      this.props.servants[this.state.currentServantKey].rank
+    ).then(() => this.setState({ confirmOpen: false, currentServantKey: null }))
   }
 
   removeServantDialog = key => () => {

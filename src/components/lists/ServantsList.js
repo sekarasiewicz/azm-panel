@@ -30,7 +30,7 @@ const styles = theme => ({
     backgroundColor: 'red',
   },
 })
-// TODO itarate by servantRanks and fill data from servants
+
 class ServantsList extends React.Component {
   getSecondary = (servant) => {
     if (servant) {
@@ -85,9 +85,9 @@ class ServantsList extends React.Component {
         { withoutRank.length > 0 &&
         <div>
           <h2 className={classes.rankHeader}>Without Rank</h2>
-          <List dense={false} className={classes.orphans}>
+          <List dense={false}>
             { withoutRank.map(key => (
-              <ListItem button key={key} onClick={updateServant(key)}>
+              <ListItem button key={key} onClick={updateServant(key)} className={classes.orphans}>
                 <ListItemAvatar>
                   <Avatar>
                     <FolderIcon />

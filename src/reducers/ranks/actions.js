@@ -15,7 +15,7 @@ export const deleteRank = (key) => {
   rankRef.child(key).remove()
   const srRef = servantRanksRef.child(key)
 
-  srRef.once('value').then(snapshot => {
+  return srRef.once('value').then(snapshot => {
     snapshot.forEach(data => {
       servantsRef.child(data.key).once('value').then(snapshot => {
         let servant = snapshot.val()

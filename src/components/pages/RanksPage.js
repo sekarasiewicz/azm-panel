@@ -68,13 +68,15 @@ class RanksPage extends React.Component {
     })
   }
 
-  handleAlertDialogClose = () => this.setState({confirmOpen: false})
+  handleAlertDialogClose = () => this.setState({confirmOpen: false, currentRankKey: null})
   handleRankDialogClose = () => this.setState({rankOpen: false, currentRankKey: null})
 
   handleAlertDialogConfirm = () => {
+    const currentRankKey = this.state.currentRankKey
     this.setState({
       confirmOpen: false,
-    }, () => deleteRank(this.state.currentRankKey))
+      currentRankKey: null,
+    }, () => deleteRank(currentRankKey))
   }
 
   removeRankDialog = key => () => {

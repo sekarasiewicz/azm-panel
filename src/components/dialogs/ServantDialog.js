@@ -17,7 +17,7 @@ class ServantDialog extends React.Component {
         city: '',
         status: true,
         year: '',
-        from: '',
+        since: '',
         battleTag: '',
         rank: '',
       }
@@ -83,9 +83,9 @@ class ServantDialog extends React.Component {
           />
           <TextInput
             id="from"
-            label="In Clan From"
-            onChange={this.handleChange('from')}
-            value={this.state.from}
+            label="In Clan Since"
+            onChange={this.handleChange('since')}
+            value={this.state.since}
           />
           <TextInput
             id="battleTag"

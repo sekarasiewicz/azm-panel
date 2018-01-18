@@ -4,28 +4,32 @@ import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import SelectInput from '../inputs/SelectInput'
+import FileInput from '../inputs/FileInput'
 
 class ServantDialog extends React.Component {
   constructor (props) {
     super(props)
     if (props.servant) {
-      this.state = {...props.servant}
+      this.state = { servant: { ...props.servant } }
     } else {
       this.state = {
-        name: '',
-        nick: '',
-        city: '',
-        status: true,
-        year: '',
-        since: '',
-        battleTag: '',
-        rank: '',
+        servant: {
+          avatar: '',
+          name: '',
+          nick: '',
+          city: '',
+          status: true,
+          year: '',
+          since: '',
+          battleTag: '',
+          rank: '',
+        },
       }
     }
   }
 
   handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value })
+    this.setState({servant: { [prop]: event.target.value }})
   }
 
   // Something is wrong with library I have to wrap everything 2 times
@@ -46,58 +50,58 @@ class ServantDialog extends React.Component {
     return (
       <BaseDialog
         title={this.getTitle()}
-        desc="For now no Description"
         open={open}
         handleClose={handleClose}
-        handleConfirm={handleConfirm(this.state)}
+        handleConfirm={handleConfirm(this.state.servant)}
         child={<div>
+          <FileInput />
           <TextInput
             id="name"
             label="Name"
             onChange={this.handleChange('name')}
-            value={this.state.name}
+            value={this.state.servant.name}
           />
           <TextInput
             id="nick"
             label="Nick"
             onChange={this.handleChange('nick')}
-            value={this.state.nick}
+            value={this.state.servant.nick}
           />
           <TextInput
             id="city"
             label="City"
             onChange={this.handleChange('city')}
-            value={this.state.city}
+            value={this.state.servant.city}
           />
           <CheckboxInput
             label="Status"
             onChange={this.handleCheckChange('status')}
             value="status"
-            checked={this.state.status}
+            checked={this.state.servant.status}
           />
           <TextInput
             id="year"
             label="Year"
             onChange={this.handleChange('year')}
-            value={this.state.year}
+            value={this.state.servant.year}
           />
           <TextInput
             id="from"
             label="In Clan Since"
             onChange={this.handleChange('since')}
-            value={this.state.since}
+            value={this.state.servant.since}
           />
           <TextInput
             id="battleTag"
             label="Battle Tag"
             onChange={this.handleChange('battleTag')}
-            value={this.state.battleTag}
+            value={this.state.servant.battleTag}
           />
           <SelectInput
             id="rank"
             label="Rank"
             options={ranks}
-            value={this.state.rank}
+            value={this.state.servant.rank}
             onChange={this.handleChange('rank')}
           />
         </div>}

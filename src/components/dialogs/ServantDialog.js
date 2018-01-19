@@ -24,6 +24,8 @@ class ServantDialog extends React.Component {
           battleTag: '',
           rank: '',
         },
+        avatar: null,
+        avatarBinary: null,
       }
     }
   }
@@ -44,9 +46,36 @@ class ServantDialog extends React.Component {
     return 'Add Servant'
   }
 
+  onAvaterChange = (e) => {
+    const file = e.target.files[0]
+    let reader = new FileReader()
+    reader.onload = () => {
+      this.setState({
+        servant: { ...this.state.servant, avatar: file.name },
+        avatarBinary: reader.result,
+      })
+    }
+    this.setState({ avatar: file }, () => reader.readAsDataURL(file))
+  }
+
+  onAvatarCancel = () => {
+    this.setState({
+      servant: { ...this.state.servant, avatar: null },
+      avatar: null,
+      avatarBinary: null,
+    })
+  }
+
+  getAvatar = () => {
+    if (this.state.avatarBinary) {
+      return this.state.avatarBinary
+    } else if (this.state.servant.avatar) {
+      return `http://costs/${this.state.servant.avatar}`
+    }
+  }
+
   render () {
     const { open, handleClose, handleConfirm, ranks } = this.props
-
     return (
       <BaseDialog
         title={this.getTitle()}
@@ -54,7 +83,11 @@ class ServantDialog extends React.Component {
         handleClose={handleClose}
         handleConfirm={handleConfirm(this.state.servant)}
         child={<div>
-          <FileInput />
+          <FileInput
+            onImageChange={this.onAvaterChange}
+            onImageCancel={this.onAvatarCancel}
+            image={this.getAvatar()}
+          />
           <TextInput
             id="name"
             label="Name"

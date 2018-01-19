@@ -26,52 +26,23 @@ const styles = theme => ({
   },
 })
 
-class FileInput extends React.Component {
-  state = {
-    imgData: null,
-  }
-
-  onChange = (e) => {
-    let reader = new FileReader()
-    reader.onload = () => {
-      this.setState({ imgData: reader.result })
-    }
-    reader.readAsDataURL(e.target.files[0])
-  }
-
-  onImgCancel = () => {
-    this.setState({imgData: null})
-  }
-
-  getImg = () => {
-    if (this.state.imgData) {
-      return this.state.imgData
-    } else if (this.props.avatar) {
-      return `http://costs/${this.props.avatar}`
-    }
-  }
-
-  render () {
-    const { classes } = this.props
-    const img = this.getImg()
-    return (
-      <div className={classes.wrapper}>
-        { img && <span className={classes.closeBtn} onClick={this.onImgCancel}>X</span> }
-        <Avatar className={classes.avatar} src={img} alt="avatar" />
-        <Button raised
-          component='label' // <-- Just add me!
-        >
-          Upload Avatar
-          <input type="file" style={{ display: 'none' }} onChange={this.onChange} />
-        </Button>
-      </div>
-    )
-  }
-}
+const FileInput = ({ classes, image, onImageChange, onImageCancel }) => (
+  <div className={classes.wrapper}>
+    { image && <span className={classes.closeBtn} onClick={onImageCancel}>X</span> }
+    <Avatar className={classes.avatar} src={image} alt="avatar" />
+    <Button raised
+      component='label'
+    >
+      Upload Avatar
+      <input type="file" style={{ display: 'none' }} onChange={onImageChange} />
+    </Button>
+  </div>
+)
 
 FileInput.propTypes = {
-  // onFileChange: PropTypes.func.isRequired,
-  avatar: PropTypes.string,
+  onImageChange: PropTypes.func.isRequired,
+  onImageCancel: PropTypes.func.isRequired,
+  image: PropTypes.string,
 }
 
 export default withStyles(styles)(FileInput)

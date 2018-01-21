@@ -5,10 +5,12 @@ const fbService = firebase.initializeApp(FIREBASE)
 const rankRef = firebase.database().ref('ranks/')
 const servantRanksRef = firebase.database().ref('servantRanks/')
 const servantsRef = firebase.database().ref('servants/')
+const storageRef = firebase.storage().ref('servants/')
 
 export {
   fbService,
   rankRef,
   servantRanksRef,
   servantsRef,
+  storageRef,
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
 import CheckboxInput from '../inputs/CheckboxInput'
 import SelectInput from '../inputs/SelectInput'
-import FileInput from '../inputs/FileInput'
+import AvatarInput from '../inputs/AvatarInput'
 
 class ServantDialog extends React.Component {
   constructor (props) {
@@ -14,7 +14,6 @@ class ServantDialog extends React.Component {
     } else {
       this.state = {
         servant: {
-          avatar: '',
           name: '',
           nick: '',
           city: '',
@@ -23,9 +22,9 @@ class ServantDialog extends React.Component {
           since: '',
           battleTag: '',
           rank: '',
+          avatar: null,
         },
-        avatar: null,
-        avatarBinary: null,
+        avatarObj: null,
       }
     }
   }
@@ -46,32 +45,26 @@ class ServantDialog extends React.Component {
     return 'Add Servant'
   }
 
-  onAvaterChange = (e) => {
-    const file = e.target.files[0]
-    let reader = new FileReader()
-    reader.onload = () => {
-      this.setState({
-        servant: { ...this.state.servant, avatar: file.name },
-        avatarBinary: reader.result,
-      })
-    }
-    this.setState({ avatar: file }, () => reader.readAsDataURL(file))
+  onAvaterChange = (fiele) => {
+    const fileName = fiele.name.replace(/\s/g, '_').toLowerCase()
+    this.setState({
+      avatarObj: fiele,
+      servant: { ...this.state.servant, avatar: fileName },
+    })
   }
 
   onAvatarCancel = () => {
     this.setState({
+      avatarObj: null,
       servant: { ...this.state.servant, avatar: null },
-      avatar: null,
-      avatarBinary: null,
     })
   }
 
   getAvatar = () => {
-    if (this.state.avatarBinary) {
-      return this.state.avatarBinary
-    } else if (this.state.servant.avatar) {
-      return `http://costs/${this.state.servant.avatar}`
+    if (this.state.servant.avatar) {
+      return `https://www.dgreen.pl/${this.state.servant.avatar}`
     }
+    return ''
   }
 
   render () {
@@ -81,9 +74,9 @@ class ServantDialog extends React.Component {
         title={this.getTitle()}
         open={open}
         handleClose={handleClose}
-        handleConfirm={handleConfirm(this.state.servant)}
+        handleConfirm={handleConfirm(this.state)}
         child={<div>
-          <FileInput
+          <AvatarInput
             onImageChange={this.onAvaterChange}
             onImageCancel={this.onAvatarCancel}
             image={this.getAvatar()}

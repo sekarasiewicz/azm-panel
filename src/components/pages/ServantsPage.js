@@ -44,9 +44,9 @@ class ServantsPage extends React.Component {
     })
   }
 
-  handleServantDialogConfirmUpdate = (servant) => () => {
+  handleServantDialogConfirmUpdate = (servantObj) => () => {
     updateServant(
-      servant,
+      servantObj,
       this.state.currentServantKey,
       this.props.servants[this.state.currentServantKey].rank).then(() => {
       this.setState({
@@ -93,7 +93,7 @@ class ServantsPage extends React.Component {
   }
 
   render () {
-    const { classes, servants, ranks, servantRanks } = this.props
+    const { classes, servants, ranks, servantRanks, avatars } = this.props
     return (<Grid
       container
       direction="row"
@@ -111,6 +111,7 @@ class ServantsPage extends React.Component {
           removeServant={this.removeServantDialog}
           updateServant={this.updateServantDialog}
           servants={servants}
+          avatars={avatars}
           ranks={ranks}
           servantRanks={servantRanks}
         />
@@ -139,6 +140,7 @@ class ServantsPage extends React.Component {
           handleConfirm={this.getServantConfirmFunc()}
           ranks={ranks}
           servant={servants && servants[this.state.currentServantKey]}
+          avatar={avatars[this.state.currentServantKey]}
         />
       }
     </Grid>)

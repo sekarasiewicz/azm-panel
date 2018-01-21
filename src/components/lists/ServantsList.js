@@ -44,8 +44,21 @@ class ServantsList extends React.Component {
     return ''
   }
 
+  getAvatar = (key) => {
+    const { servants, avatars, classes } = this.props
+
+    if (servants && servants[key].avatar) {
+      if (avatars && avatars[key]) {
+        return <Avatar className={classes.avatar} src={avatars[key]} alt="avatar" />
+      }
+      return <Avatar><p>Loading</p></Avatar>
+    }
+    return <Avatar><FolderIcon /></Avatar>
+  }
+
   render () {
-    const { classes, servants, ranks, servantRanks, updateServant, removeServant } = this.props
+    const {
+      classes, servants, ranks, servantRanks, updateServant, removeServant } = this.props
     const withoutRank = servants ? Object.keys(servants).filter(s => !servants[s].rank) : []
     return (
       <Paper>
@@ -62,9 +75,7 @@ class ServantsList extends React.Component {
               { servantRanks && Object.keys(servantRanks[rankKey]).map(key => (
                 <ListItem button key={key} onClick={updateServant(key)}>
                   <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
+                    { this.getAvatar(key) }
                   </ListItemAvatar>
                   <ListItemText
                     primary={servants[key].nick}
@@ -119,6 +130,7 @@ ServantsList.propTypes = {
   updateServant: PropTypes.func.isRequired,
   removeServant: PropTypes.func.isRequired,
   servants: PropTypes.object,
+  avatars: PropTypes.object,
   ranks: PropTypes.object,
   servantRanks: PropTypes.object,
 }

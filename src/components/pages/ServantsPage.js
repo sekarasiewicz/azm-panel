@@ -38,8 +38,17 @@ class ServantsPage extends React.Component {
     currentServantKey: null,
   }
 
-  handleServantDialogConfirmAdd = (servant) => () => {
-    addServant(servant).then(() => {
+  handleServantDialogConfirmAdd = (servantObj) => () => {
+    const {key, promise} = addServant(servantObj.servant)
+
+    const toResolve = [promise]
+    if (servantObj.avatarObj) {
+      toResolve.push(saveAvatar(servantObj.avatarObj, key).then(snapshot => {
+        this.props.updateAvatar({[key]: snapshot.downloadURL})
+      }))
+    }
+
+    Promise.all(toResolve).then(() => {
       this.setState({
         servantOpen: false,
       })

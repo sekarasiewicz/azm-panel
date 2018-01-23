@@ -104,9 +104,7 @@ class ServantsList extends React.Component {
             { withoutRank.map(key => (
               <ListItem button key={key} onClick={updateServant(key)} className={classes.orphans}>
                 <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
+                  { this.getAvatar(key) }
                 </ListItemAvatar>
                 <ListItemText
                   primary={servants[key].nick}

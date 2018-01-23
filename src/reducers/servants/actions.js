@@ -50,7 +50,12 @@ export const saveServant = (servant, key) => {
   return fbService.database().ref().update(updates)
 }
 
-export const addServant = (servantObj) => saveServant(servantObj, servantsRef.push().key)
+export const addServant = (servant) => {
+  const key = servantsRef.push().key
+  // Kind of stupid I prefere to get promise which return something, instead
+  // update promise return undefined!
+  return {key, promise: saveServant(servant, key)}
+}
 
 export const updateServant = (servant, key, oldRank) => {
   if (servant.rank !== oldRank && oldRank) {

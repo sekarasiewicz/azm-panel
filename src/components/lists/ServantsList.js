@@ -13,6 +13,7 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
+import { CircularProgress } from 'material-ui/Progress'
 
 const styles = theme => ({
   panelHeader: {
@@ -28,6 +29,9 @@ const styles = theme => ({
   },
   orphans: {
     backgroundColor: 'red',
+  },
+  emptAvatar: {
+    backgroundColor: 'white',
   },
 })
 
@@ -51,7 +55,7 @@ class ServantsList extends React.Component {
       if (avatars && avatars[key]) {
         return <Avatar className={classes.avatar} src={avatars[key]} alt="avatar" />
       }
-      return <Avatar><p>Loading</p></Avatar>
+      return <Avatar className={classes.emptAvatar}><CircularProgress/></Avatar>
     }
     return <Avatar><FolderIcon /></Avatar>
   }

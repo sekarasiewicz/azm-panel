@@ -7,16 +7,20 @@ export const servantAvatarsFetched = (avatars) => ({type: SERVANT_AVATARS_FETCHE
 export const fetchAvatars = (servants) => {
   return (dispatch) => {
     Promise.all(Object.keys(servants).filter(s => servants[s].avatar).map(key => {
+      console.log('fetchAvatars')
       return storageRef.child(`${key}/${servants[key].avatar}`).getDownloadURL().then(url => {
-        return { [key]: url }
+        return {key: key, url: url}
+        // TODO Fetch on new file Does not work !, you have to take url from Uploaded file
+      }).catch(error => console.log('ERROR', error))
+    }))
+      .then(payload => {
+        const toDispatch = payload.reduce((obj, item) => {
+          obj[item.key] = item.url
+          return obj
+        }, {})
+
+        dispatch(servantAvatarsFetched(toDispatch))
       })
-    })).then(payload => {
-      const toDispatch = payload.reduce((obj, item) => {
-        obj[Object.keys(item)[0]] = Object.values(item)[0]
-        return obj
-      }, {})
-      dispatch(servantAvatarsFetched(toDispatch))
-    })
   }
 }
 
@@ -24,7 +28,7 @@ export const servantRanksChange = (servantRanks) => (
   {type: SERVANT_RANK_CHANGE, payload: servantRanks})
 
 export const saveServant = (servantObj, key) => {
-  const servant = servantObj.servant
+  const { servant, avatarObj } = servantObj
   let updates = {}
   if (servantObj.servant.rank) {
     updates['/servantRanks/' + servant.rank + '/' + key] = true
@@ -33,8 +37,9 @@ export const saveServant = (servantObj, key) => {
 
   const toSave = [fbService.database().ref().update(updates)]
 
-  if (servantObj.avatarObj) {
-    toSave.push(storageRef.child(`${key}/${servant.avatar}`).put(servantObj.avatarObj))
+  if (avatarObj) {
+    // TODO Get avatar from promise!
+    toSave.push(storageRef.child(`${key}/${servant.avatar}`).put(avatarObj))
   }
 
   return Promise.all(toSave)
@@ -46,6 +51,7 @@ export const updateServant = (servantObj, key, oldRank) => {
   if (servantObj.servant.rank !== oldRank && oldRank) {
     servantRanksRef.child(oldRank).child(key).remove()
   }
+  // TODO usuwanie starych avatarow!
   return saveServant(servantObj, key)
 }
 
@@ -54,6 +60,7 @@ export const deleteServant = (key, rank) => {
   if (rank) {
     toRemove.push(servantRanksRef.child(rank).child(key).remove())
   }
+  // TODO usuniecie avatara
   return Promise.all(toRemove)
 }
 
@@ -61,6 +68,7 @@ export const addServantListener = () => {
   return (dispatch) => {
     servantsRef.on('value', (snapshot) => {
       dispatch(servantsChange(snapshot.val()))
+      // TODO Fetch Avatars only ONCE!
       dispatch(fetchAvatars(snapshot.val()))
     })
   }

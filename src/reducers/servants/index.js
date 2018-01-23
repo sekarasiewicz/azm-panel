@@ -13,7 +13,6 @@ export default (state = initialState, action = {}) => {
     case SERVANT_RANK_CHANGE:
       return {...state, servantRanks: action.payload}
     case SERVANT_AVATARS_FETCHED:
-      console.log('SERVANT_AVATARS_FETCHED')
       return {...state, avatars: action.payload}
     default: return state
   }

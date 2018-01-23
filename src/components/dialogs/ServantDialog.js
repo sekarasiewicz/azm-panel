@@ -60,15 +60,8 @@ class ServantDialog extends React.Component {
     })
   }
 
-  getAvatar = () => {
-    if (this.state.servant.avatar) {
-      return `https://www.dgreen.pl/${this.state.servant.avatar}`
-    }
-    return ''
-  }
-
   render () {
-    const { open, handleClose, handleConfirm, ranks } = this.props
+    const { open, handleClose, handleConfirm, ranks, avatar } = this.props
     return (
       <BaseDialog
         title={this.getTitle()}
@@ -79,7 +72,7 @@ class ServantDialog extends React.Component {
           <AvatarInput
             onImageChange={this.onAvaterChange}
             onImageCancel={this.onAvatarCancel}
-            image={this.getAvatar()}
+            image={avatar}
           />
           <TextInput
             id="name"
@@ -142,6 +135,7 @@ ServantDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   ranks: PropTypes.object,
   servant: PropTypes.object,
+  avatar: PropTypes.string,
 }
 
 export default ServantDialog

@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from 'material-ui/Button'
+import { withStyles } from 'material-ui/styles'
 import PropTypes from 'prop-types'
 import Dialog, {
   DialogActions,
@@ -7,6 +8,16 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog'
+import { LinearProgress } from 'material-ui/Progress'
+
+const styles = theme => ({
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+})
 
 class BaseDialog extends React.Component {
   state = {
@@ -18,7 +29,7 @@ class BaseDialog extends React.Component {
   }
 
   render () {
-    const { open, handleClose, title, desc, child } = this.props
+    const { classes, open, handleClose, title, desc, child } = this.props
     const { disabled } = this.state
     return (
       <div>
@@ -28,6 +39,7 @@ class BaseDialog extends React.Component {
           aria-labelledby="dialog-title"
           { ...(desc && { 'aria-describedby': 'dialog-description' }) }
         >
+          { disabled && <LinearProgress className={classes.loader} />}
           <DialogTitle id="dialog-title">{title}</DialogTitle>
           <DialogContent>
             {desc &&
@@ -62,4 +74,4 @@ BaseDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
 }
 
-export default BaseDialog
+export default withStyles(styles)(BaseDialog)

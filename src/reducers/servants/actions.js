@@ -13,14 +13,12 @@ export const fetchAvatars = (servants) => {
   return (dispatch) => {
     Promise.all(Object.keys(servants).filter(s => servants[s].avatar).map(key => {
       return storageRef.child(`${key}/${servants[key].avatar}`).getDownloadURL().then(url => {
-        return {key: key, url: url}
-        // TODO Fetch on new file Does not work !, you have to take url from Uploaded file
+        return {[key]: url}
       }).catch(error => console.log('ERROR', error))
     }))
       .then(payload => {
         const toDispatch = payload.reduce((obj, item) => {
-          obj[item.key] = item.url
-          return obj
+          return {...obj, ...item}
         }, {})
 
         dispatch(servantAvatarsFetched(toDispatch))
@@ -31,14 +29,15 @@ export const fetchAvatars = (servants) => {
 export const servantRanksChange = (servantRanks) => (
   { type: SERVANT_RANK_CHANGE, payload: servantRanks })
 
+export const updateAvatar = (avatar) => {
+  return dispatch => {
+    dispatch(servantAvatarChanged(avatar))
+  }
+}
+
 export const saveAvatar = (avatarObj, key) => {
   // TODO usuwanie starych avatarow!
-  return dispatch => {
-    storageRef.child(
-      `${key}/${avatarObj.name}`).put(avatarObj).then((snapshot) => {
-      dispatch(servantAvatarChanged({[key]: snapshot.downloadURL}))
-    })
-  }
+  return storageRef.child(`${key}/${avatarObj.name}`).put(avatarObj)
 }
 
 export const saveServant = (servant, key) => {

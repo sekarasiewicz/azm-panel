@@ -11,6 +11,7 @@ import ServantDialog from '../dialogs/ServantDialog'
 import {
   addServant,
   saveAvatar,
+  updateAvatar,
   updateServant,
   deleteServant,
 } from '../../reducers/servants/actions'
@@ -47,17 +48,21 @@ class ServantsPage extends React.Component {
 
   handleServantDialogConfirmUpdate = (servantObj) => () => {
     const { currentServantKey } = this.state
-    updateServant(
-      servantObj.servant,
-      currentServantKey,
-      this.props.servants[currentServantKey].rank).then(() => {
-      this.props.saveAvatar(servantObj.avatarObj, currentServantKey)
-    })
-      .then(() => {
-        this.setState({
-          servantOpen: false,
-        })
+    const { servants } = this.props
+
+    const toResolve = [
+      updateServant(servantObj.servant, currentServantKey, servants[currentServantKey].rank)]
+    if (servantObj.avatarObj) {
+      toResolve.push(saveAvatar(servantObj.avatarObj, currentServantKey).then(snapshot => {
+        this.props.updateAvatar({[currentServantKey]: snapshot.downloadURL})
+      }))
+    }
+
+    Promise.all(toResolve).then(() => {
+      this.setState({
+        servantOpen: false,
       })
+    })
   }
 
   getServantConfirmFunc = () => {
@@ -160,6 +165,6 @@ ServantsPage.propTypes = {
 }
 export default compose(
   withStyles(styles),
-  connect(state => state.servants, { saveAvatar }),
+  connect(state => state.servants, { updateAvatar }),
   connect(state => state.ranks),
 )(ServantsPage)

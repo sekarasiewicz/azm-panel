@@ -1,13 +1,17 @@
 import { servantRanksRef, servantsRef, fbService, storageRef } from '../../lib/firebaseService'
-import { SERVANT_CHANGE, SERVANT_RANK_CHANGE, SERVANT_AVATARS_FETCHED } from './constants'
+import {
+  SERVANT_CHANGE, SERVANT_RANK_CHANGE,
+  SERVANT_AVATARS_FETCHED, SERVANT_AVATAR_CHANGED } from './constants'
 
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
-export const servantAvatarsFetched = (avatars) => ({type: SERVANT_AVATARS_FETCHED, payload: avatars})
+export const servantAvatarsFetched = (avatars) => (
+  {type: SERVANT_AVATARS_FETCHED, payload: avatars})
+
+export const servantAvatarChanged = avatar => ({type: SERVANT_AVATAR_CHANGED, payload: avatar})
 
 export const fetchAvatars = (servants) => {
   return (dispatch) => {
     Promise.all(Object.keys(servants).filter(s => servants[s].avatar).map(key => {
-      console.log('fetchAvatars')
       return storageRef.child(`${key}/${servants[key].avatar}`).getDownloadURL().then(url => {
         return {key: key, url: url}
         // TODO Fetch on new file Does not work !, you have to take url from Uploaded file
@@ -25,34 +29,35 @@ export const fetchAvatars = (servants) => {
 }
 
 export const servantRanksChange = (servantRanks) => (
-  {type: SERVANT_RANK_CHANGE, payload: servantRanks})
+  { type: SERVANT_RANK_CHANGE, payload: servantRanks })
 
-export const saveServant = (servantObj, key) => {
-  const { servant, avatarObj } = servantObj
+export const saveAvatar = (avatarObj, key) => {
+  // TODO usuwanie starych avatarow!
+  return dispatch => {
+    storageRef.child(
+      `${key}/${avatarObj.name}`).put(avatarObj).then((snapshot) => {
+      dispatch(servantAvatarChanged({[key]: snapshot.downloadURL}))
+    })
+  }
+}
+
+export const saveServant = (servant, key) => {
   let updates = {}
-  if (servantObj.servant.rank) {
+  if (servant.rank) {
     updates['/servantRanks/' + servant.rank + '/' + key] = true
   }
   updates['/servants/' + key] = servant
 
-  const toSave = [fbService.database().ref().update(updates)]
-
-  if (avatarObj) {
-    // TODO Get avatar from promise!
-    toSave.push(storageRef.child(`${key}/${servant.avatar}`).put(avatarObj))
-  }
-
-  return Promise.all(toSave)
+  return fbService.database().ref().update(updates)
 }
 
 export const addServant = (servantObj) => saveServant(servantObj, servantsRef.push().key)
 
-export const updateServant = (servantObj, key, oldRank) => {
-  if (servantObj.servant.rank !== oldRank && oldRank) {
+export const updateServant = (servant, key, oldRank) => {
+  if (servant.rank !== oldRank && oldRank) {
     servantRanksRef.child(oldRank).child(key).remove()
   }
-  // TODO usuwanie starych avatarow!
-  return saveServant(servantObj, key)
+  return saveServant(servant, key)
 }
 
 export const deleteServant = (key, rank) => {
@@ -64,18 +69,22 @@ export const deleteServant = (key, rank) => {
   return Promise.all(toRemove)
 }
 
-export const addServantListener = () => {
-  return (dispatch) => {
+export const addServantListener = (initializing) => {
+  return (dispatch, getState) => {
     servantsRef.on('value', (snapshot) => {
+      const { servants } = getState()
+
       dispatch(servantsChange(snapshot.val()))
-      // TODO Fetch Avatars only ONCE!
-      dispatch(fetchAvatars(snapshot.val()))
+      // Want to fetch all avatars only when there are no avatars
+      if (!servants.avatars) {
+        dispatch(fetchAvatars(snapshot.val()))
+      }
     })
   }
 }
 
 export const addServantRankListener = () => {
-  return (dispatch) => {
+  return dispatch => {
     servantRanksRef.on('value', (snapshot) => {
       dispatch(servantRanksChange(snapshot.val()))
     })

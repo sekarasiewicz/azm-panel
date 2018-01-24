@@ -30,12 +30,12 @@ class ServantDialog extends React.Component {
   }
 
   handleChange = prop => event => {
-    this.setState({servant: { [prop]: event.target.value }})
+    this.setState({servant: { ...this.state.servant, [prop]: event.target.value }})
   }
 
   // Something is wrong with library I have to wrap everything 2 times
   handleCheckChange = name => () => (event, checked) => {
-    this.setState({ [name]: checked })
+    this.setState({ servant: { ...this.state.servant, [name]: checked } })
   }
 
   getTitle = () => {

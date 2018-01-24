@@ -51,6 +51,7 @@ class ServantsPage extends React.Component {
     Promise.all(toResolve).then(() => {
       this.setState({
         servantOpen: false,
+        currentServantKey: null,
       })
     })
   }
@@ -66,10 +67,10 @@ class ServantsPage extends React.Component {
         this.props.updateAvatar({[currentServantKey]: snapshot.downloadURL})
       }))
     }
-
     Promise.all(toResolve).then(() => {
       this.setState({
         servantOpen: false,
+        currentServantKey: null,
       })
     })
   }

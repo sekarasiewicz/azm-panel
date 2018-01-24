@@ -11,9 +11,10 @@ import List, {
 } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
-import FolderIcon from 'material-ui-icons/Folder'
+import FaceIcon from 'material-ui-icons/Face'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { CircularProgress } from 'material-ui/Progress'
+import red from 'material-ui/colors/orange'
 
 const styles = theme => ({
   panelHeader: {
@@ -28,10 +29,21 @@ const styles = theme => ({
     paddingLeft: 10,
   },
   orphans: {
-    backgroundColor: 'red',
+    backgroundColor: red[900],
+  },
+  avatar: {
+    width: 60,
+    height: 60,
   },
   emptAvatar: {
     backgroundColor: 'white',
+    width: 60,
+    height: 60,
+  },
+  icon: {
+    width: 60,
+    height: 60,
+    color: theme.palette.primary[500],
   },
 })
 
@@ -57,7 +69,9 @@ class ServantsList extends React.Component {
       }
       return <Avatar className={classes.emptAvatar}><CircularProgress/></Avatar>
     }
-    return <Avatar><FolderIcon /></Avatar>
+    return <Avatar className={classes.emptAvatar}>
+      <FaceIcon className={classes.icon} />
+    </Avatar>
   }
 
   render () {

@@ -59,9 +59,15 @@ class ServantsPage extends React.Component {
   handleServantDialogConfirmUpdate = (servantObj) => () => {
     const { currentServantKey } = this.state
     const { servants } = this.props
+    const servant = servants[currentServantKey]
 
     const toResolve = [
-      updateServant(servantObj.servant, currentServantKey, servants[currentServantKey].rank)]
+      updateServant(
+        servantObj.servant,
+        currentServantKey,
+        servant.rank,
+        servant.avatar,
+      )]
     if (servantObj.avatarObj) {
       toResolve.push(saveAvatar(servantObj.avatarObj, currentServantKey).then(snapshot => {
         this.props.updateAvatar({[currentServantKey]: snapshot.downloadURL})
@@ -92,9 +98,11 @@ class ServantsPage extends React.Component {
   handleServantDialogClose = () => this.setState({servantOpen: false, currentServantKey: null})
 
   handleAlertDialogConfirm = () => {
+    const servant = this.props.servants[this.state.currentServantKey]
     deleteServant(
       this.state.currentServantKey,
-      this.props.servants[this.state.currentServantKey].rank
+      servant.rank,
+      servant.avatar,
     ).then(() => this.setState({ confirmOpen: false, currentServantKey: null }))
   }
 

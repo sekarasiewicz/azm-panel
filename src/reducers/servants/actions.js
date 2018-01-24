@@ -57,19 +57,27 @@ export const addServant = (servant) => {
   return {key, promise: saveServant(servant, key)}
 }
 
-export const updateServant = (servant, key, oldRank) => {
+export const updateServant = (servant, key, oldRank, oldAvatar) => {
+  const toUpdate = []
   if (servant.rank !== oldRank && oldRank) {
-    servantRanksRef.child(oldRank).child(key).remove()
+    toUpdate.push(servantRanksRef.child(oldRank).child(key).remove())
   }
-  return saveServant(servant, key)
+  if (servant.avatar !== oldAvatar && oldAvatar) {
+    toUpdate.push(storageRef.child(`${key}/${oldAvatar}`).delete())
+  }
+  return Promise.all(toUpdate).then(() => saveServant(servant, key))
 }
 
-export const deleteServant = (key, rank) => {
+export const deleteServant = (key, rank, avatarName) => {
   const toRemove = [servantsRef.child(key).remove()]
   if (rank) {
     toRemove.push(servantRanksRef.child(rank).child(key).remove())
   }
-  // TODO usuniecie avatara
+
+  if (avatarName) {
+    toRemove.push(storageRef.child(`${key}/${avatarName}`).delete())
+  }
+
   return Promise.all(toRemove)
 }
 

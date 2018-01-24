@@ -53,6 +53,7 @@ class AvatarInput extends React.Component {
   }
 
   onImageCancel = () => {
+    // TODO Handle when User have avatar!
     this.setState({image: null}, () => this.props.onImageCancel())
   }
 

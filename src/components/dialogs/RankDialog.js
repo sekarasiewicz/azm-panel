@@ -2,6 +2,7 @@ import React from 'react'
 import BaseDialog from './BaseDialog'
 import PropTypes from 'prop-types'
 import TextInput from '../inputs/TextInput'
+import { ChromePicker } from 'react-color'
 
 class RankDialog extends React.Component {
   constructor (props) {
@@ -12,12 +13,17 @@ class RankDialog extends React.Component {
       this.state = {
         name: '',
         level: '',
+        color: '',
       }
     }
   }
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value })
+  }
+
+  handleChangeComplete = (color) => {
+    this.setState({ color: color.hex })
   }
 
   getTitle = () => {
@@ -48,6 +54,10 @@ class RankDialog extends React.Component {
             label="Level"
             onChange={this.handleChange('level')}
             value={this.state.level}
+          />
+          <ChromePicker
+            color={ this.state.color }
+            onChangeComplete={ this.handleChangeComplete }
           />
         </div>}
       />

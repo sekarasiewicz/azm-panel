@@ -1,28 +1,18 @@
 import { servantRanksRef, servantsRef, fbService, storageRef } from '../../lib/firebaseService'
 import {
-  SERVANT_CHANGE, SERVANT_RANK_CHANGE,
-  SERVANT_AVATARS_FETCHED, SERVANT_AVATAR_CHANGED } from './constants'
+  SERVANT_CHANGE, SERVANT_RANK_CHANGE, SERVANT_AVATAR_CHANGED } from './constants'
 
 export const servantsChange = (servants) => ({type: SERVANT_CHANGE, payload: servants})
-export const servantAvatarsFetched = (avatars) => (
-  {type: SERVANT_AVATARS_FETCHED, payload: avatars})
 
 export const servantAvatarChanged = avatar => ({type: SERVANT_AVATAR_CHANGED, payload: avatar})
 
 export const fetchAvatars = (servants) => {
   return (dispatch) => {
-    Promise.all(Object.keys(servants).filter(s => servants[s].avatar).map(key => {
+    Object.keys(servants).filter(s => servants[s].avatar).map(key => {
       return storageRef.child(`${key}/${servants[key].avatar}`).getDownloadURL().then(url => {
-        return {[key]: url}
+        dispatch(servantAvatarChanged({[key]: url}))
       }).catch(error => console.log('ERROR', error))
-    }))
-      .then(payload => {
-        const toDispatch = payload.reduce((obj, item) => {
-          return {...obj, ...item}
-        }, {})
-
-        dispatch(servantAvatarsFetched(toDispatch))
-      })
+    })
   }
 }
 
@@ -36,7 +26,6 @@ export const updateAvatar = (avatar) => {
 }
 
 export const saveAvatar = (avatarObj, key) => {
-  // TODO usuwanie starych avatarow!
   return storageRef.child(`${key}/${avatarObj.name}`).put(avatarObj)
 }
 

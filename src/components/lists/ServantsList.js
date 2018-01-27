@@ -74,6 +74,13 @@ class ServantsList extends React.Component {
     </Avatar>
   }
 
+  getColor = (rankKey) => {
+    if (this.props.ranks) {
+      const rankColor = this.props.ranks[rankKey].color
+      return rankColor && {color: rankColor}
+    }
+  }
+
   render () {
     const {
       classes, servants, ranks, servantRanks, updateServant, removeServant } = this.props
@@ -88,7 +95,9 @@ class ServantsList extends React.Component {
         { ranks && Object.keys(ranks).map(rankKey => (
           servantRanks && servantRanks[rankKey] &&
           <div key={rankKey}>
-            <h2 className={classes.rankHeader}>{ ranks[rankKey].name }</h2>
+            <h2
+              className={classes.rankHeader}
+              style={this.getColor(rankKey)}>{ ranks[rankKey].name }</h2>
             <List dense={false}>
               { servantRanks && Object.keys(servantRanks[rankKey]).map(key => (
                 <ListItem button key={key} onClick={updateServant(key)}>

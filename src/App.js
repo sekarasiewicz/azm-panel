@@ -19,7 +19,7 @@ import {
   detachServantRankListener,
   detachServantListener } from './reducers/servants/actions'
 import './App.css'
-
+// TODO SSL !
 class App extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.user) {

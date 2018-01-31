@@ -60,8 +60,15 @@ class ServantDialog extends React.Component {
     })
   }
 
+  getAvatar = () => {
+    if (this.state.servant.avatar) {
+      return this.props.avatar
+    }
+    return null
+  }
+
   render () {
-    const { open, handleClose, handleConfirm, ranks, avatar } = this.props
+    const { open, handleClose, handleConfirm, ranks } = this.props
     return (
       <BaseDialog
         title={this.getTitle()}
@@ -72,7 +79,7 @@ class ServantDialog extends React.Component {
           <AvatarInput
             onImageChange={this.onAvaterChange}
             onImageCancel={this.onAvatarCancel}
-            image={avatar}
+            image={this.getAvatar()}
           />
           <TextInput
             id="name"

@@ -17,6 +17,9 @@ const styles = theme => ({
     left: 0,
     right: 0,
   },
+  dialogColor: {
+    backgroundColor: '#ccc',
+  },
 })
 
 class BaseDialog extends React.Component {
@@ -40,8 +43,8 @@ class BaseDialog extends React.Component {
           { ...(desc && { 'aria-describedby': 'dialog-description' }) }
         >
           { disabled && <LinearProgress className={classes.loader} />}
-          <DialogTitle id="dialog-title">{title}</DialogTitle>
-          <DialogContent>
+          <DialogTitle className={classes.dialogColor} id="dialog-title">{title}</DialogTitle>
+          <DialogContent className={classes.dialogColor}>
             {desc &&
               <DialogContentText id="dialog-description">
                 { desc }

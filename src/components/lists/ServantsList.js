@@ -45,6 +45,9 @@ const styles = theme => ({
     height: 60,
     color: theme.palette.primary[500],
   },
+  paper: {
+    backgroundColor: '#ddd',
+  },
 })
 
 class ServantsList extends React.Component {
@@ -86,7 +89,7 @@ class ServantsList extends React.Component {
       classes, servants, ranks, servantRanks, updateServant, removeServant } = this.props
     const withoutRank = servants ? Object.keys(servants).filter(s => !servants[s].rank) : []
     return (
-      <Paper>
+      <Paper className={classes.paper}>
         <Typography
           type="headline"
           className={classes.panelHeader}>
@@ -100,7 +103,11 @@ class ServantsList extends React.Component {
               style={this.getColor(rankKey)}>{ ranks[rankKey].name }</h2>
             <List dense={false}>
               { servantRanks && Object.keys(servantRanks[rankKey]).map(key => (
-                <ListItem button key={key} onClick={updateServant(key)}>
+                <ListItem
+                  button
+                  className={classes.listItem}
+                  key={key}
+                  onClick={updateServant(key)}>
                   <ListItemAvatar>
                     { this.getAvatar(key) }
                   </ListItemAvatar>

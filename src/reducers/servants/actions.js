@@ -54,7 +54,7 @@ export const updateServant = (servant, key, oldRank, oldAvatar) => {
   if (servant.avatar !== oldAvatar && oldAvatar) {
     toUpdate.push(storageRef.child(`${key}/${oldAvatar}`).delete())
   }
-  return Promise.all(toUpdate).then(() => saveServant(servant, key))
+  return saveServant(servant, key).then(() => Promise.all(toUpdate))
 }
 
 export const deleteServant = (key, rank, avatarName) => {

@@ -65,6 +65,7 @@ class AvatarInput extends React.Component {
         { avatar && <span className={classes.closeBtn} onClick={this.onImageCancel}>X</span> }
         <Avatar className={classes.avatar} src={avatar} alt="avatar" />
         <Button raised
+          color="primary"
           component='label'
         >
           Avatar

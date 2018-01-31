@@ -25,7 +25,10 @@ const styles = (theme, uc) => {
       backgroundColor: theme.palette.primary[500],
       color: theme.palette.getContrastText(theme.palette.primary[500]),
       height: 50,
-    }
+    },
+    paper: {
+      backgroundColor: '#ddd',
+    },
   })
 }
 
@@ -43,16 +46,15 @@ class RanksList extends React.Component {
     if (this.props.ranks) {
       const rankColor = this.props.ranks[rankKey].color
       return rankColor && {
-        color: invertColor(rankColor),
+        color: invertColor(rankColor, true),
       }
     }
   }
 
   render () {
     const {classes, ranks, updateRank, removeRank} = this.props
-    console.log('classes', classes)
     return (
-      <Paper>
+      <Paper className={classes.paper}>
         <Typography
           type="headline"
           className={classes.panelHeader}>
@@ -81,7 +83,7 @@ class RanksList extends React.Component {
                 <IconButton aria-label="Delete"
                   onClick={removeRank(key)}
                 >
-                  <DeleteIcon />
+                  <DeleteIcon style={this.getColor(key)} />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>

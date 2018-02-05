@@ -10,17 +10,20 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative',
   },
   avatar: {
     margin: 10,
     width: 60,
     height: 60,
   },
+  avatarWrapper: {
+    position: 'relative',
+  },
   closeBtn: {
     color: 'red',
     position: 'absolute',
     top: 0,
+    right: 0,
     margin: 0,
     cursor: 'pointer',
   },
@@ -62,8 +65,6 @@ class AvatarInput extends React.Component {
     const avatar = this.getAvatar()
     return (
       <div className={classes.wrapper}>
-        { avatar && <span className={classes.closeBtn} onClick={this.onImageCancel}>X</span> }
-        <Avatar className={classes.avatar} src={avatar} alt="avatar" />
         <Button raised
           color="primary"
           component='label'
@@ -71,6 +72,10 @@ class AvatarInput extends React.Component {
           Avatar
           <input type="file" style={{ display: 'none' }} onChange={this.onImageChange} />
         </Button>
+        <div className={classes.avatarWrapper}>
+          { avatar && <span className={classes.closeBtn} onClick={this.onImageCancel}>X</span> }
+          <Avatar className={classes.avatar} src={avatar} alt="avatar" />
+        </div>
       </div>
     )
   }

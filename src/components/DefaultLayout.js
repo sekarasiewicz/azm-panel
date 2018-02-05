@@ -20,7 +20,6 @@ const styles = theme => ({
     flex: 1,
     marginLeft: 30,
     display: 'flex',
-    justifyContent: 'space-between',
   },
   appBar: {
     marginBottom: 20,
@@ -72,7 +71,7 @@ class DefaultLayout extends React.Component {
             <Typography type="title" color="inherit">
                 Słudzy Azmodana
             </Typography>
-            <Hidden xsDown>
+            <Hidden only={['xs', 'sm']}>
               <nav className={classes.nav}>
                 <Button
                   color="contrast"
@@ -93,7 +92,7 @@ class DefaultLayout extends React.Component {
               </nav>
               <Button color="contrast" onClick={logout}>Logout</Button>
             </Hidden>
-            <Hidden only={['sm', 'md', 'lg', 'xl']}>
+            <Hidden only={['md', 'lg', 'xl']}>
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}

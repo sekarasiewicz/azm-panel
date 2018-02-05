@@ -29,7 +29,8 @@ const styles = theme => ({
     paddingLeft: 10,
   },
   orphans: {
-    backgroundColor: red[900],
+    paddingLeft: 10,
+    color: red[900],
   },
   avatar: {
     width: 60,
@@ -108,17 +109,13 @@ class ServantsList extends React.Component {
                   className={classes.listItem}
                   key={key}
                   onClick={updateServant(key)}>
-                  <ListItemAvatar>
-                    { this.getAvatar(key) }
-                  </ListItemAvatar>
+                  <ListItemAvatar>{ this.getAvatar(key) }</ListItemAvatar>
                   <ListItemText
                     primary={servants[key].nick}
                     secondary={this.getSecondary(servants[key])}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete"
-                      onClick={removeServant(key)}
-                    >
+                    <IconButton aria-label="Delete" onClick={removeServant(key)}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -129,10 +126,10 @@ class ServantsList extends React.Component {
         ))}
         { withoutRank.length > 0 &&
         <div>
-          <h2 className={classes.rankHeader}>Without Rank</h2>
+          <h2 className={classes.orphans}>Without Rank</h2>
           <List dense={false}>
             { withoutRank.map(key => (
-              <ListItem button key={key} onClick={updateServant(key)} className={classes.orphans}>
+              <ListItem button key={key} onClick={updateServant(key)}>
                 <ListItemAvatar>
                   { this.getAvatar(key) }
                 </ListItemAvatar>

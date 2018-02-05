@@ -11,9 +11,7 @@ import List, {
 } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
-import FolderIcon from 'material-ui-icons/Folder'
 import DeleteIcon from 'material-ui-icons/Delete'
-import { invertColor } from '../../lib/utils'
 
 const styles = (theme, uc) => {
   console.log(theme, uc)
@@ -29,6 +27,10 @@ const styles = (theme, uc) => {
     paper: {
       backgroundColor: '#ddd',
     },
+    avatar: {
+      width: '100%',
+      height: '100%',
+    },
   })
 }
 
@@ -38,15 +40,6 @@ class RanksList extends React.Component {
       const rankColor = this.props.ranks[rankKey].color
       return rankColor && {
         backgroundColor: rankColor,
-      }
-    }
-  }
-
-  getColor = (rankKey) => {
-    if (this.props.ranks) {
-      const rankColor = this.props.ranks[rankKey].color
-      return rankColor && {
-        color: invertColor(rankColor, true),
       }
     }
   }
@@ -66,24 +59,21 @@ class RanksList extends React.Component {
               button
               key={key}
               onClick={updateRank(key)}
-              style={this.getBackgroundColor(key)}
             >
               <ListItemAvatar>
                 <Avatar>
-                  <FolderIcon />
+                  <div className={classes.avatar} style={this.getBackgroundColor(key)}>&nbsp;</div>
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={<span style={this.getColor(key)}>{ranks[key].name}</span>}
-                secondary={
-                  <span style={this.getColor(key)}>{`level: ${ranks[key].level}`}</span>
-                }
+                primary={ranks[key].name}
+                secondary={`level: ${ranks[key].level}`}
               />
               <ListItemSecondaryAction>
                 <IconButton aria-label="Delete"
                   onClick={removeRank(key)}
                 >
-                  <DeleteIcon style={this.getColor(key)} />
+                  <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>

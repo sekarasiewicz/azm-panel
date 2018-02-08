@@ -11,6 +11,7 @@ export const updateRank = (rank, key) => {
   return rankRef.child(key).set(rank)
 }
 
+// TODO check if delete can be done smarter
 export const deleteRank = (key) => {
   rankRef.child(key).remove()
   const srRef = servantRanksRef.child(key)

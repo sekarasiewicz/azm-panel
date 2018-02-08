@@ -121,7 +121,7 @@ class LoginPage extends React.Component {
               onChange={this.handleChange('password')}
               value={this.state.password}
             />
-            <Button raised color="primary"
+            <Button variant="raised" color="primary"
               onClick={this.onLogin}
               disabled={isLoading}>
               Login

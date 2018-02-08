@@ -11,13 +11,14 @@ const styles = theme => ({
 })
 
 const TextInput = ({ id, label, value, error, onChange, classes }) => (
-  <FormControl fullWidth className={classes.formControl} error={error}>
+  <FormControl fullWidth className={classes.formControl} error={!!error}>
     <InputLabel htmlFor={id}>{label}</InputLabel>
     <Input
       id={id}
       type= 'text'
       value={value}
       onChange={onChange}
+      autoFocus
     />
     <FormHelperText>{error}</FormHelperText>
   </FormControl>

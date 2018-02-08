@@ -71,27 +71,6 @@ class DefaultLayout extends React.Component {
             <Typography type="title" color="inherit">
                 Słudzy Azmodana
             </Typography>
-            <Hidden only={['xs', 'sm']}>
-              <nav className={classes.nav}>
-                <Button
-                  color="contrast"
-                  component={NavLink}
-                  activeClassName={classes.activeButton}
-                  to="/servants"
-                >
-                  Servants
-                </Button>
-                <Button
-                  color="contrast"
-                  component={NavLink}
-                  to="/ranks"
-                  activeClassName={classes.activeButton}
-                >
-                  Ranks
-                </Button>
-              </nav>
-              <Button color="contrast" onClick={logout}>Logout</Button>
-            </Hidden>
             <Hidden only={['md', 'lg', 'xl']}>
               <div>
                 <IconButton
@@ -130,6 +109,27 @@ class DefaultLayout extends React.Component {
                   <MenuItem onClick={ logout } style={{ color: '#ff0000' }}>Logout</MenuItem>
                 </Menu>
               </div>
+            </Hidden>
+            <Hidden only={['xs', 'sm']}>
+              <nav className={classes.nav}>
+                <Button
+                  color="secondary"
+                  component={NavLink}
+                  activeClassName={classes.activeButton}
+                  to="/servants"
+                >
+                  Servants
+                </Button>
+                <Button
+                  color="secondary"
+                  component={NavLink}
+                  to="/ranks"
+                  activeClassName={classes.activeButton}
+                >
+                  Ranks
+                </Button>
+              </nav>
+              <Button color="secondary" onClick={logout}>Logout</Button>
             </Hidden>
           </Toolbar>
         </AppBar>

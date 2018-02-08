@@ -56,7 +56,6 @@ class AvatarInput extends React.Component {
   }
 
   onImageCancel = () => {
-    // TODO Handle when User have avatar!
     this.setState({image: null}, () => this.props.onImageCancel())
   }
 
@@ -65,7 +64,7 @@ class AvatarInput extends React.Component {
     const avatar = this.getAvatar()
     return (
       <div className={classes.wrapper}>
-        <Button raised
+        <Button variant="raised"
           color="primary"
           component='label'
         >

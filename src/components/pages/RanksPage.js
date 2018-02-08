@@ -113,7 +113,7 @@ class RanksPage extends React.Component {
         />
       </Grid>
       <Button
-        fab color="primary"
+        variant="fab" color="primary"
         aria-label="add"
         className={classes.fab}
         onClick={this.newRank}

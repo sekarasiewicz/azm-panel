@@ -58,11 +58,13 @@ export const updateServant = (servant, key, oldRank, oldAvatar) => {
 }
 
 export const deleteServant = (key, rank, avatarName) => {
-  const toRemove = [servantsRef.child(key).remove()]
+  let updates = {}
+  updates['/servants/' + key] = null
   if (rank) {
-    toRemove.push(servantRanksRef.child(rank).child(key).remove())
+    updates['/servantRanks/' + rank + '/' + key] = null
   }
 
+  const toRemove = [fbService.database().ref().update(updates)]
   if (avatarName) {
     toRemove.push(storageRef.child(`${key}/${avatarName}`).delete())
   }

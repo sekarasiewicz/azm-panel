@@ -46,10 +46,9 @@ class ServantDialog extends React.Component {
   }
 
   onAvaterChange = (fiele) => {
-    const fileName = fiele.name.replace(/\s/g, '_').toLowerCase()
     this.setState({
       avatarObj: fiele,
-      servant: { ...this.state.servant, avatar: fileName },
+      servant: { ...this.state.servant, avatar: fiele.name },
     })
   }
 

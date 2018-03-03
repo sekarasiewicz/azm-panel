@@ -12,6 +12,7 @@ class RankDialog extends React.Component {
     } else {
       this.state = {
         name: '',
+        single: '',
         level: '',
         color: '',
       }
@@ -48,6 +49,12 @@ class RankDialog extends React.Component {
             label="Name"
             onChange={this.handleChange('name')}
             value={this.state.name}
+          />
+          <TextInput
+            id="single"
+            label="Single"
+            onChange={this.handleChange('single')}
+            value={this.state.single}
           />
           <TextInput
             id="level"
